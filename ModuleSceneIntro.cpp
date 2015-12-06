@@ -20,6 +20,14 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	Cube c(10, 5, 30);
+	c.SetPos(0, 0, 0);
+	App->physics->AddBody(c, 0);
+
+	Cube c2(80, 5, 20);
+	c2.SetPos(35, 0, 25);
+	App->physics->AddBody(c2, 0);
+
 	return ret;
 }
 
