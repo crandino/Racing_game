@@ -29,6 +29,8 @@ public:
 	PhysBody3D* pb_snake2[MAX_SNAKE];
 	Sphere s_snake2[MAX_SNAKE];
 	*/
+	p2List<PhysBody3D*> circuit_pieces_ph3d;
+	p2List<Primitive> circuit_pieces_primitives;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;

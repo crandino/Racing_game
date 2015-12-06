@@ -118,9 +118,7 @@ update_status ModulePlayer::Update(float dt)
 	const vec3 f = vehicle->GetForwardVector();
 	vec3 d; d.Set(p.x + (f.x * -8), p.y + (f.y + 5), p.z + (f.z * -8));
 	//const vec3 r = p + delta;
-	App->camera->Look(d, p);
-
-	
+	App->camera->Look(d, p);	
 
 	turn = acceleration = brake = 0.0f;
 
