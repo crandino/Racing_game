@@ -20,7 +20,7 @@ bool ModulePlayer::Start()
 
 	VehicleInfo car;
 
-	// Car properties ----------------------------------------
+	// Car properties 
 	car.chassis_size.Set(2, 2, 4);
 	car.chassis_offset.Set(0, 1.5, 0);
 	car.mass = 500.0f;
@@ -97,7 +97,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 12, 10);
+	vehicle->SetPos(1, 1, 1);
 	
 	return true;
 }
@@ -113,6 +113,14 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
+	// CRZ -> implementation of camera. Let's do it!	
+	const vec3 p = vehicle->GetPos();
+	const vec3 delta(0, 6, -10);
+	const vec3 r = p + delta;
+	App->camera->Look(r, p, false);
+
+	btVector3 h = vehicle->vehicle->getForwardVector();
+
 	turn = acceleration = brake = 0.0f;
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)

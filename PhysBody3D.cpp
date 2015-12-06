@@ -27,6 +27,14 @@ void PhysBody3D::GetTransform(float* matrix) const
 	}
 }
 
+const vec3 PhysBody3D::GetPos() const
+{
+	float matrix[16];
+	GetTransform(matrix);
+	vec3 pos(matrix[12], matrix[13], matrix[14]);
+	return pos;
+}
+
 // ---------------------------------------------------------
 void PhysBody3D::SetTransform(const float* matrix) const
 {
