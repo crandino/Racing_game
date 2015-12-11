@@ -4,7 +4,9 @@
 
 // =================================================
 PhysBody3D::PhysBody3D(btRigidBody* body) : body(body)
-{}
+{
+	body->setUserPointer(this);
+}
 
 // ---------------------------------------------------------
 PhysBody3D::~PhysBody3D()
@@ -29,10 +31,10 @@ void PhysBody3D::GetTransform(float* matrix) const
 
 const vec3 PhysBody3D::GetPos() const
 {
-	float matrix[16];
-	GetTransform(matrix);
-	vec3 pos(matrix[12], matrix[13], matrix[14]);
-	return pos;
+	btTransform t = body->getWorldTransform();
+	btVector3 v = t.getOrigin();
+	vec3 ret; ret.Set(v.getX(), v.getY(), v.getZ());
+	return ret;
 }
 
 // ---------------------------------------------------------

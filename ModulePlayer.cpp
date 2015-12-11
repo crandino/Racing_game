@@ -4,10 +4,12 @@
 #include "Primitive.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
+#include <math.h>
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
 {
 	turn = acceleration = brake = 0.0f;
+	following_camera = false;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -39,8 +41,8 @@ bool ModulePlayer::Start()
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x*0.5f;
-	float half_length = car.chassis_size.z*0.5f;
+	float half_width = car.chassis_size.x * 0.5f;
+	float half_length = car.chassis_size.z * 0.5f;
 	
 	vec3 direction(0,-1,0);
 	vec3 axis(-1,0,0);
@@ -97,7 +99,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(1, 1, 1);
+	vehicle->SetPos(175, 1, 0);
 	
 	return true;
 }
@@ -113,14 +115,26 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update(float dt)
 {
-	// CRZ -> implementation of camera. Let's do it!	
-	const vec3 p = vehicle->GetPos();
-	const vec3 f = vehicle->GetForwardVector();
-	vec3 d; d.Set(p.x + (f.x * -8), p.y + (f.y + 5), p.z + (f.z * -8));
-	//const vec3 r = p + delta;
-	App->camera->Look(d, p);	
+	// CRZ -> implementation of camera. Let's do it!
+	float speed_cam = 0.09;
+	if (following_camera)
+	{
+		vec3 p = vehicle->GetPos();
+		vec3 f = vehicle->GetForwardVector();
+
+		vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
+		vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
+		vec3 speed_camera = camera_new_position - App->camera->Position;
+
+		App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+	}	
 
 	turn = acceleration = brake = 0.0f;
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		following_camera = !following_camera;
+	}
 
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
@@ -155,7 +169,8 @@ update_status ModulePlayer::Update(float dt)
 	vehicle->Render();
 
 	char title[80];
-	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
+	vec3 v = vehicle->GetPos();
+	sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), v.x, v.y, v.z );
 	App->window->SetTitle(title);
 
 	return UPDATE_CONTINUE;

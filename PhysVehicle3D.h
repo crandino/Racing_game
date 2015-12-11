@@ -24,9 +24,6 @@ struct VehicleInfo
 {
 	~VehicleInfo();
 	
-	// CRZ - An attribute to control the heading of the car.
-	vec3 heading;
-	// CRZ
 	vec3 chassis_size;
 	vec3 chassis_offset;
 	float mass;

@@ -9,6 +9,12 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
+struct cubePieces
+{
+	p2DynArray<PhysBody3D*>		phys_bodies;
+	p2DynArray<Cube>			prim_bodies;
+};	
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -20,6 +26,7 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+	void createSpiralRamp(vec3 initial_pos);
 
 public:
 	/*
@@ -29,8 +36,8 @@ public:
 	PhysBody3D* pb_snake2[MAX_SNAKE];
 	Sphere s_snake2[MAX_SNAKE];
 	*/
-	p2List<PhysBody3D*> circuit_pieces_ph3d;
-	p2List<Primitive> circuit_pieces_primitives;
+	
+	cubePieces cube_circuit_pieces;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
