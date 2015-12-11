@@ -101,3 +101,32 @@ vec3 PhysVehicle3D::GetForwardVector() const
 	ret.Set(h.getX(), h.getY(), h.getZ());
 	return ret;
 }
+
+void PhysVehicle3D::orient(float angle_r)
+{
+	// Angle_r equal to 0 is on positive z axis
+	// Incrementing angle_r goes to 
+
+	static float angle_static = angle_r;
+
+	float matrix[16];
+	memset(matrix, 0.0f, sizeof(matrix));
+
+	// Keep position
+	vec3 p = GetPos();
+	matrix[12] = p.x;
+	matrix[13] = p.y;
+	matrix[14] = p.z;
+	matrix[15] = 1;
+
+	matrix[0] = cos(angle_static);
+	matrix[2] = -sin(angle_static);
+	matrix[5] = 1;
+	matrix[8] = sin(angle_static);
+	matrix[10] = cos(angle_static);
+
+	SetTransform(matrix);
+	LOG("%.2f", angle_static * 180.0f / M_PI);
+	angle_static += M_PI / 18.0f;
+	
+}

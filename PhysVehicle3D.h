@@ -51,6 +51,7 @@ public:
 	void Turn(float degrees);
 	float GetKmh() const;
 	vec3 GetForwardVector() const;
+	void orient(float angle_r);
 
 public:
 

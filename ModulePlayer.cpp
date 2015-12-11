@@ -129,6 +129,11 @@ update_status ModulePlayer::Update(float dt)
 		App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
 	}	
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		respawn();
+	}
+
 	turn = acceleration = brake = 0.0f;
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
@@ -176,5 +181,10 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-
+void ModulePlayer::respawn()
+{
+	vehicle->SetPos(0, 0, 0);
+	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
+	vehicle->orient(0);
+}
 
