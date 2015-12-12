@@ -99,7 +99,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(175, 1, 0);
+	vehicle->SetPos(0, 0, 0);
 	
 	return true;
 }
@@ -131,7 +131,7 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 	{
-		respawn();
+		respawn(App->scene_intro->checkpoints[App->scene_intro->current_checkpoint]);
 	}
 
 	turn = acceleration = brake = 0.0f;
@@ -181,9 +181,9 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModulePlayer::respawn()
+void ModulePlayer::respawn(const vec3& respawn_point)
 {
-	vehicle->SetPos(0, 0, 0);
+	vehicle->SetPos(respawn_point.x, respawn_point.y, respawn_point.z);
 	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
 	vehicle->orient(0);
 }

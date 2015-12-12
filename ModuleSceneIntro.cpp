@@ -20,6 +20,12 @@ bool ModuleSceneIntro::Start()
 
 	/*App->camera->Move(vec3(170.0f, 40.0f, 75.0f));
 	App->camera->LookAt(vec3(170.0f, 0, 75.0f));*/
+	vec3 cp0(175, 1, 0);
+	vec3 cp1(0, 0, 0);
+
+	current_checkpoint = 1;
+	checkpoints.PushBack(cp0);
+	checkpoints.PushBack(cp1);
 
 	Cube border_block;
 	border_block.color.Set(0.67,0.18,0.18);
@@ -28,38 +34,38 @@ bool ModuleSceneIntro::Start()
 	border_block.SetPos(185, 1, 0);
 	border_block.SetRotation(90, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.SetPos(170, 1, 0);
 	border_block.SetRotation(90, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.SetPos(183, 1, 50);
 	border_block.SetRotation(85, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.SetPos(167, 1, 50);
 	border_block.SetRotation(83, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.SetPos(163, 1, 92);
 	border_block.SetRotation(45, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.SetPos(146, 1, 92);
 	border_block.SetRotation(45, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	border_block.size = { 10, 2, 1 };
 	border_block.SetPos(141, 1, 114);
 	border_block.SetRotation(45, { 0, 1, 0 });
 	cube_circuit_pieces.prim_bodies.PushBack(border_block);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(border_block, this, 0.0f));
 
 	Cube ramp;
 	ramp.color = { 0.5, 0.5, 0.5 };
@@ -67,7 +73,8 @@ bool ModuleSceneIntro::Start()
 	ramp.SetPos(136, 1, 111);
 	ramp.SetRotation(45, { -0.5f, 0.90f, -0.5f });
 	cube_circuit_pieces.prim_bodies.PushBack(ramp);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(ramp, 0.0f));	
+	// Should be a local variable (physbody)
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(ramp, this, 0.0f, true));
 
 	App->camera->Move(vec3(141.0f, 40.0f, 114.0f));
 	App->camera->LookAt(vec3(141.0f, 0, 114.0f));
@@ -122,19 +129,19 @@ void ModuleSceneIntro::createSpiralRamp(vec3 initial_pos)
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.SetRotation(angle_d, { 0, 0, 1 });		
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	pos += {dim.x * cos(angle_r), dim.x * sin(angle_r), 0};
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.SetRotation(angle_d, { 0.50f, 0, 1 });
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	pos += {dim.x * cos(angle_r), dim.x * sin(angle_r), 0};
 	c.SetPos(pos.x, pos.y, pos.z);
 	c.SetRotation(angle_d, { 1.0f, 0, 1 });
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 }
 
 // Load assets
@@ -160,5 +167,17 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	if (body1->is_sensor == true)
+	{
+		for (uint i = 0; i < sensors.Count(); i++)
+		{
+			if (body1 == sensors[i])
+			{
+				current_checkpoint = i;
+				body1->is_sensor = false;
+				break;
+			}
+		}
+	}
 }
 

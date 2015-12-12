@@ -24,6 +24,9 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
+	p2DynArray<vec3> checkpoints;
+	p2DynArray<PhysBody3D*> sensors;
+	int current_checkpoint;
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createSpiralRamp(vec3 initial_pos);

@@ -4,6 +4,7 @@
 #include "p2Point.h"
 
 struct PhysVehicle3D;
+class vec3;
 
 #define MAX_ACCELERATION 1000.0f
 #define TURN_DEGREES 15.0f * DEGTORAD
@@ -19,7 +20,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void respawn();
+	void respawn(const vec3& respawn_point);
 
 public:
 
