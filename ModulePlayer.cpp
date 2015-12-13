@@ -101,7 +101,6 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->SetPos(25, 1, 0);
 	state = GO;
-
 	
 	return true;
 }
@@ -142,15 +141,18 @@ update_status ModulePlayer::Update(float dt)
 		}
 		case GO:
 		{
-			float speed_cam = 0.09;
-			vec3 p = vehicle->GetPos();
-			vec3 f = vehicle->GetForwardVector();
+			if (following_camera)
+			{
+				float speed_cam = 0.09;
+				vec3 p = vehicle->GetPos();
+				vec3 f = vehicle->GetForwardVector();
 
-			vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
-			vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
-			vec3 speed_camera = camera_new_position - App->camera->Position;
+				vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
+				vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
+				vec3 speed_camera = camera_new_position - App->camera->Position;
 
-			App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+				App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+			}			
 
 			turn = acceleration = brake = 0.0f;
 
@@ -195,6 +197,11 @@ update_status ModulePlayer::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		respawn(App->scene_intro->checkpoints[App->scene_intro->current_checkpoint]);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		following_camera = !following_camera;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
