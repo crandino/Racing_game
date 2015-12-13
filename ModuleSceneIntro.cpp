@@ -79,10 +79,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(0.0f, 1.0f, 1.0f));
 	App->camera->LookAt(vec3(0.0f, 0, 0.0f));
 
-	createLinearSegmentCircuit({ 12, 0, -24 }, { 13, 0, 2 }, 20);
-	createCircularSegmentCircuit({ 13, 0, 2 }, { -20, 0, 10 }, 0.80f);
-	createLinearSegmentCircuit({ -20, 0, 10 }, { -30, 0, 50 }, 20);
-	createCircularSegmentCircuit({ -30, 0, 50 }, { -50, 0, 70 }, -0.45f);
+	createLinearSegmentCircuit({ -30, 0, 50 }, { -20, 0, 10 }, 20);
+	createCircularSegmentCircuit({ -20, 0, 10 }, { 20, 0,20  }, -0.80f, 20);	
 	
 	return ret;
 }
@@ -222,7 +220,7 @@ void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, ui
 
 
 
-void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor)
+void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals)
 {
 	assert(factor < 1.0f && factor > -1.0f);
 	float distance = length(f - i);
@@ -267,11 +265,10 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 	c.color = Orange;
 
 	vec3 central_pos;
-	uint interval = 50;
-	for (uint j = 0; j < interval; j++)
+	for (uint j = 0; j < intervals; j++)
 	{
-
-		float sub_angle = (factor > 0.0f) ? -(float)j / interval * theta : (float)j / interval * theta;
+		c.color = (j % 2 == 0) ? White : Red;
+		float sub_angle = (factor > 0.0f) ? -(float)j / intervals * theta : (float)j / intervals * theta;
 
 		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
 		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);	

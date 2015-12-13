@@ -15,7 +15,7 @@ struct cubePieces
 	p2DynArray<Cube>			prim_bodies;
 };	
 
-#define TRACK_WIDTH 15
+#define TRACK_WIDTH 15.0f
 
 class ModuleSceneIntro : public Module
 {
@@ -33,7 +33,7 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createSpiralRamp(vec3 initial_pos);
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
-	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor);
+	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
 
 public:
 	/*
