@@ -32,7 +32,7 @@ bool ModuleSceneIntro::Start()
 
 	createLinearSegmentCircuit({ -30, 0, 50 }, { -20, 0, 10 }, 20);
 	createCircularSegmentCircuit({ -20, 0, 10 }, { 20, 0,20  }, -0.80f, 20);
-	createRamp({ 10, 0, -10 }, { 30, 0, 20 });
+	createRamp({ 8, 0, 33 }, { 20, 0, 10 });
 	
 	return ret;
 }
@@ -46,8 +46,22 @@ void angleAndAxisFromEuler(float psi, float theta, float phi, float &angle, vec3
 	theta = theta * M_PI / 180.0f;
 	phi = phi * M_PI / 180.0f;*/
 
-	float m[3][3];
+	/*float c1 = cos(psi / 2.0f);
+	float c2 = cos(theta / 2.0f);
+	float c3 = cos(phi / 2.0f);
+	float s1 = sin(psi / 2.0f);
+	float s2 = sin(theta / 2.0f);
+	float s3 = sin(phi / 2.0f);
 
+	angle = 2.0f * acos(c1*c2*c3 - s1*s2*s3);
+	axis.x = s1*s2*c3 + c1*c2*s3;
+	axis.y = s1*c2*c3 + c1*s2*s3;
+	axis.z = c1*s2*c3 - s1*c2*s3;
+
+	axis = normalize(axis);*/
+
+	float m[3][3];
+	
 	m[0][0] = cos(theta)*cos(psi);
 	m[0][1] = cos(psi)*sin(theta)*sin(phi) - cos(phi)*sin(psi);
 	m[0][2] = cos(psi)*cos(psi)*sin(theta) + sin(psi)*sin(phi);
@@ -65,8 +79,6 @@ void angleAndAxisFromEuler(float psi, float theta, float phi, float &angle, vec3
 	axis.z = (m[1][0] - m[0][1]) / (2 * sin(angle));
 
 	axis = normalize(axis);
-
-	angle = angle / M_PI * 180.0f;
 }
 
 // Load assets
@@ -109,16 +121,13 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 void ModuleSceneIntro::createRamp(const vec3 i, const vec3 f)
 {
 	float height = 10;
-	vec3 dir = normalize(f - i);
-	
-	// Angle theta about y axis
-	
-
-	// Angle psi about z axis
 	vec3 f2 = { f.x, height, f.z };
-	dir = normalize(f2 - i);
+	vec3 dir = normalize(f2 - i);
 
-	/*float heading = 0.0f;
+	vec3 perp_v = { -dir.z, 0, dir.x };
+	perp_v = normalize(perp_v);
+
+	float heading = 0.0f;
 	if (i.z >= 0.0f && i.x < 0.0f)
 		heading = acos(dot(dir, { 1, 0, 0 }));
 	else if (i.z >= 0.0f && i.x >= 0.0f)
@@ -126,35 +135,27 @@ void ModuleSceneIntro::createRamp(const vec3 i, const vec3 f)
 	else if (i.z < 0.0f && i.x >= 0.0f)
 		heading = 2 * M_PI - acos(dot(dir, { 1, 0, 0 }));
 	else if (i.z < 0.0f && i.x < 0.0f)
-		heading = 2 * M_PI - acos(dot(dir, { 1, 0, 0 }));*/
+		heading = 2 * M_PI - acos(dot(dir, { 1, 0, 0 }));
 
-	float heading = 0.0f;
-	heading = acos(dot(dir, { 0, 1, 0 }));
-	
-	float psi = 0.0f;
-	psi = acos(dot(dir, { 1, 0, 0 }));
+	float slope = asin(height / length(f2));
 
-	float phi = 0.0f;
-	phi = acos(dot(dir, { 0, 0, 1 }));
+	LOG("SLope = %f", slope * 180.0f / M_PI);
 
-	/*if (dir.x > 0.0f)
+	float matrix[16];
+	memset(matrix, 0.0f, sizeof(matrix));
 
+	// Keep position
+	matrix[12] = i.x;
+	matrix[13] = i.y;
+	matrix[14] = i.z;
+	matrix[15] = 1;
 
-	if (i.y >= 0.0f && i.x < 0.0f)
-		psi = acos(dot(dir, { 1, 0, 0 }));
-	else if (i.y >= 0.0f && i.x >= 0.0f)
-		psi = acos(dot(dir, { 1, 0, 0 }));
-	else if (i.y < 0.0f && i.x >= 0.0f)
-		psi = 2 * M_PI - acos(dot(dir, { 1, 0, 0 }));
-	else if (i.y < 0.0f && i.x < 0.0f)
-		psi = 2 * M_PI - acos(dot(dir, { 1, 0, 0 }));*/
-
-	LOG("Phi = %f", phi * 180.0f / M_PI);
-	
-	float angle;
-	vec3 axis;
-	angleAndAxisFromEuler(psi, heading, phi, angle, axis);
-	LOG("Angle is %f and vector is (%f, %f, %f)", angle, axis.x, axis.y, axis.z);
+	// Rotate the body by heading.
+	matrix[0] = cos(heading);
+	matrix[2] = -sin(heading);
+	matrix[5] = 1;
+	matrix[8] = sin(heading);
+	matrix[10] = cos(heading);
 
 	Cube c;
 	vec3 pos;
@@ -171,10 +172,13 @@ void ModuleSceneIntro::createRamp(const vec3 i, const vec3 f)
 	cube_circuit_pieces.prim_bodies.PushBack(c);
 	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
-	c.size = (5, 0.25, 5);
+	c.size = (5, 0.25, 10);
 	pos = i;
 	c.SetPos(pos.x, pos.y, pos.z);
-	c.SetRotation(angle, axis);
+	/*for (uint i = 0; i < 16; i++)
+		c.transform.M[i] = matrix[i];	*/
+	c.SetRotation(slope * 180.0f / M_PI, { perp_v.x, 0, perp_v.z });
+
 	cube_circuit_pieces.prim_bodies.PushBack(c);
 	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
