@@ -10,6 +10,14 @@ class vec3;
 #define TURN_DEGREES 15.0f * DEGTORAD
 #define BRAKE_POWER 1000.0f
 
+enum PLAYER_STATE
+{
+	READY,
+	STEADY,
+	GO,
+	FINISH
+};
+
 class ModulePlayer : public Module
 {
 public:
@@ -29,4 +37,5 @@ public:
 	float acceleration;
 	float brake;
 	bool  following_camera;
+	PLAYER_STATE state;
 };

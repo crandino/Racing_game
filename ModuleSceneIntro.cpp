@@ -18,10 +18,10 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	/*App->camera->Move(vec3(170.0f, 40.0f, 75.0f));
-	App->camera->LookAt(vec3(170.0f, 0, 75.0f));*/
+	App->camera->Move(vec3(0.0f, 40.0f, 0.0f));
+	//App->camera->LookAt(vec3(170.0f, 0, 75.0f));
 	vec3 cp0(175, 1, 0);
-	vec3 cp1(0, 0, 0);
+	vec3 cp1(25, 0, 0);
 
 	current_checkpoint = 1;
 	checkpoints.PushBack(cp0);

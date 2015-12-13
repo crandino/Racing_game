@@ -99,7 +99,8 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(0, 1, 0);
+	vehicle->SetPos(25, 1, 0);
+	state = READY;
 	
 	return true;
 }
@@ -116,60 +117,103 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update(float dt)
 {
 	// CRZ -> implementation of camera. Let's do it!
-	float speed_cam = 0.09;
-	if (following_camera)
+	switch (state)
 	{
-		vec3 p = vehicle->GetPos();
-		vec3 f = vehicle->GetForwardVector();
+		case READY:
+		{
+			vec3 p = vehicle->GetPos();
+			App->camera->LookAt(p);
+			acceleration = 500.0f;
+			break;
+		}
+		case STEADY:
+		{
+			float speed_cam = 0.09;
+			vec3 p = vehicle->GetPos();
+			vec3 f = vehicle->GetForwardVector();
 
-		vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
-		vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
-		vec3 speed_camera = camera_new_position - App->camera->Position;
+			vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
+			vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
+			vec3 speed_camera = camera_new_position - App->camera->Position;
 
-		App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
-	}	
+			App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+			break;
+		}
+		case GO:
+		{
+			float speed_cam = 0.09;
+			vec3 p = vehicle->GetPos();
+			vec3 f = vehicle->GetForwardVector();
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+			vec3 dist_to_car = { -8.0f, 5.0f, -8.0f };
+			vec3 camera_new_position = { p.x + (f.x * dist_to_car.x), p.y + f.y + dist_to_car.y, p.z + (f.z * dist_to_car.z) };
+			vec3 speed_camera = camera_new_position - App->camera->Position;
+
+			App->camera->Look(App->camera->Position + (speed_cam * speed_camera), p);
+
+			turn = acceleration = brake = 0.0f;
+
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			{
+				acceleration = MAX_ACCELERATION;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			{
+				if (turn < TURN_DEGREES)
+					turn += TURN_DEGREES;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			{
+				if (turn > -TURN_DEGREES)
+					turn -= TURN_DEGREES;
+			}
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			{
+				if (vehicle->GetKmh() > 0.0f)
+					brake = BRAKE_POWER;
+
+				if (vehicle->GetKmh() <= 0.0f)
+					acceleration = -(MAX_ACCELERATION / 2);
+			}
+			vehicle->Turn(turn);
+			vehicle->Brake(brake);
+			break;
+		}
+		case FINISH:
+		{
+			turn = acceleration = brake = 0.0f;
+			break;
+		}
+	}
+
+	vehicle->ApplyEngineForce(acceleration);
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		respawn(App->scene_intro->checkpoints[App->scene_intro->current_checkpoint]);
 	}
 
-	turn = acceleration = brake = 0.0f;
-
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
-		following_camera = !following_camera;
+		state = READY;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_J) == KEY_DOWN)
 	{
-		acceleration = MAX_ACCELERATION;
+		state = STEADY;
 	}
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN)
 	{
-		if(turn < TURN_DEGREES)
-			turn +=  TURN_DEGREES;
+		state = GO;
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
-		if(turn > -TURN_DEGREES)
-			turn -= TURN_DEGREES;
+		state = FINISH;
 	}
-
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		if (vehicle->GetKmh() > 0.0f)
-			brake = BRAKE_POWER;
-
-		if (vehicle->GetKmh() <= 0.0f)
-			acceleration = - (MAX_ACCELERATION / 2);
-	}
-
-	vehicle->ApplyEngineForce(acceleration);
-	vehicle->Turn(turn);
-	vehicle->Brake(brake);
 
 	vehicle->Render();
 
