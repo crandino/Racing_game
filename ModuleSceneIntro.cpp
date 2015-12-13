@@ -220,7 +220,6 @@ void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, ui
 
 void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor)
 {
-
 	assert(factor < 1.0f && factor > -1.0f);
 	float distance = length(f - i);
 	vec3 mid_point = (f - i) / 2.0f + i;
@@ -237,82 +236,54 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 
 	float mFH = (h.z - f.z) / (h.x - f.x);
 	float mIH = (i.z - h.z) / (i.x - h.x);
-	
+
 	vec3 center_circle = { 0, 0, 0 };
 	center_circle.x = (mFH*mIH*(i.z - f.z) + mFH*(h.x + i.x) - mIH*(f.x + h.x)) / (2.0f * (mFH - mIH));
 	center_circle.z = (-1 / mFH)*(center_circle.x - ((f.x + h.x) / 2.0f)) + ((f.z + h.z) / 2.0f);
 
 	vec3 c_to_i = normalize(i - center_circle);
 	vec3 c_to_f = normalize(f - center_circle);
-	float radius = length(f - center_circle);
-	
 	float theta = acos(dot(c_to_f, c_to_i));
-	float angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
-	angle_ref = (i.z >= 0.0f) ? angle_ref : -angle_ref;
+	float radius = length(f - center_circle);
 
-	LOG("%f", theta * 180.0f / M_PI);
-	LOG("%f", angle_ref * 180.0f / M_PI);
+	float angle_ref = 0.0f;
+	if (i.z >= center_circle.z && i.x < center_circle.x)
+		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
+	else if (i.z >= center_circle.z && i.x >= center_circle.x)
+		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
+	else if (i.z < center_circle.z && i.x >= center_circle.x)
+		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
+	else if (i.z < center_circle.z && i.x < center_circle.x)
+		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
 
 	Cube c;
 	vec3 dim(1, 2, 1);
 	vec3 pos;
 	c.size = { dim.x, dim.y, dim.z };
 	c.color = Orange;
-	
+
 	vec3 central_pos;
-	uint interval = 10;
+	uint interval = 50;
 	for (uint j = 0; j < interval; j++)
 	{
-		
-		float sub_angle =  ((float)j / 10) * theta;
+
+		float sub_angle = (factor > 0.0f) ? -(float)j / interval * theta : (float)j / interval * theta;
+
 		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
 		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);
 
 		vec3 to_center = normalize(central_pos - center_circle);
-		pos = central_pos + (TRACK_WIDTH / 2.0f) * to_center;
+		pos = central_pos + ((TRACK_WIDTH / 2.0f) * to_center);
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c,this, 0.0f));
 
-		pos = central_pos + (TRACK_WIDTH / 2.0f) * -to_center;
+		pos = central_pos + ((TRACK_WIDTH / 2.0f) * -to_center);
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c,this, 0.0f));
 
-		c.color.g += 0.03;
-		c.color.b += 0.25;
 	}
-
-	c.color = Black;
-	pos = i;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-	c.color = White;
-	pos = f;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-	c.color = Blue;
-	pos = mid_point;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-	c.color = Red;
-	pos = h;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-	c.color = Green;
-	pos = center_circle;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
 }
 
 
