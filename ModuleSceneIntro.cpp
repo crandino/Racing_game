@@ -79,9 +79,11 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(0.0f, 1.0f, 1.0f));
 	App->camera->LookAt(vec3(0.0f, 0, 0.0f));
 
-	//createLinearSegmentCircuit({ 12, 0, -24 }, { 13, 0, 2 }, 10);
-	createCircularSegmentCircuit({ 23, 0, -20}, { -1, 0, 30 }, 0.77f);
-
+	createLinearSegmentCircuit({ 12, 0, -24 }, { 13, 0, 2 }, 20);
+	createCircularSegmentCircuit({ 13, 0, 2 }, { -20, 0, 10 }, 0.80f);
+	createLinearSegmentCircuit({ -20, 0, 10 }, { -30, 0, 50 }, 20);
+	createCircularSegmentCircuit({ -30, 0, 50 }, { -50, 0, 70 }, -0.45f);
+	
 	return ret;
 }
 
@@ -218,6 +220,8 @@ void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, ui
 	}
 }
 
+
+
 void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor)
 {
 	assert(factor < 1.0f && factor > -1.0f);
@@ -250,12 +254,12 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 	if (i.z >= center_circle.z && i.x < center_circle.x)
 		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
 	else if (i.z >= center_circle.z && i.x >= center_circle.x)
-		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));
+		angle_ref = acos(dot(c_to_i, { 1, 0, 0 }));	
 	else if (i.z < center_circle.z && i.x >= center_circle.x)
-		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
+		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));	
 	else if (i.z < center_circle.z && i.x < center_circle.x)
 		angle_ref = 2 * M_PI - acos(dot(c_to_i, { 1, 0, 0 }));
-
+		
 	Cube c;
 	vec3 dim(1, 2, 1);
 	vec3 pos;
@@ -270,7 +274,7 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 		float sub_angle = (factor > 0.0f) ? -(float)j / interval * theta : (float)j / interval * theta;
 
 		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
-		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);
+		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);	
 
 		vec3 to_center = normalize(central_pos - center_circle);
 		pos = central_pos + ((TRACK_WIDTH / 2.0f) * to_center);
@@ -284,6 +288,7 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c,this, 0.0f));
 
 	}
+
 }
 
 
