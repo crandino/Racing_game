@@ -209,12 +209,12 @@ void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, ui
 		pos = (i + (dir_v * j * dist_segment)) + ((TRACK_WIDTH / 2) * perp_v);
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 		pos = (i + (dir_v * j * dist_segment)) + ((TRACK_WIDTH / 2) * -perp_v);
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 	}
 }
 
@@ -272,12 +272,12 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 		pos = central_pos + (TRACK_WIDTH / 2.0f) * to_center;
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 		pos = central_pos + (TRACK_WIDTH / 2.0f) * -to_center;
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 		c.color.g += 0.03;
 		c.color.b += 0.25;
@@ -287,31 +287,31 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 	pos = i;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	c.color = White;
 	pos = f;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	c.color = Blue;
 	pos = mid_point;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	c.color = Red;
 	pos = h;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	c.color = Green;
 	pos = center_circle;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, 0.0f));
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 }
 
