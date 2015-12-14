@@ -25,7 +25,7 @@ bool ModulePlayer::Start()
 	// Car properties 
 	car.chassis_size.Set(2, 2, 4);
 	car.chassis_offset.Set(0, 1.5, 0);
-	car.mass = 500.0f;
+	car.mass = 1000.0f;
 	car.suspensionStiffness = 15.88f;
 	car.suspensionCompression = 0.83f;
 	car.suspensionDamping = 0.88f;
@@ -99,7 +99,8 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(25, 1, 0);
+	vehicle->SetPos(-50, 0, -175.0f);
+	vehicle->orient(M_PI/2);
 	state = GO;
 	
 	return true;

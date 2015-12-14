@@ -18,8 +18,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(0.0f, 40.0f, 0.0f));
-	//App->camera->LookAt(vec3(170.0f, 0, 75.0f));
+	App->camera->Move(vec3(0.0f, 140.0f, -175.0f));
+	App->camera->LookAt(vec3(0.0f, 0.0f, -175.0f));
 	vec3 cp0(175, 1, 0);
 	vec3 cp1(25, 0, 0);
 
@@ -27,13 +27,21 @@ bool ModuleSceneIntro::Start()
 	checkpoints.PushBack(cp0);
 	checkpoints.PushBack(cp1);
 
-	App->camera->Move(vec3(0.0f, 1.0f, 1.0f));
-	App->camera->LookAt(vec3(0.0f, 0, 0.0f));
+	/*App->camera->Move(vec3(0.0f, 1.0f, 1.0f));
+	App->camera->LookAt(vec3(0.0f, 0, 0.0f));*/
 
-	createLinearSegmentCircuit({ -30, 0, 50 }, { -20, 0, 10 }, 20);
-	createCircularSegmentCircuit({ -20, 0, 10 }, { 20, 0,20  }, -0.80f, 20);
-	createRamp({ 1, 0, -20 }, { 5, 0, 10 });
+	// Circuit creation
+	createLinearSegmentCircuit({ -50, 0, -175.0f }, { 30, 0, -175.0f }, 30);
+	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
+	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
+	createRamp({ 75, 0, -156.6f }, { 90, 8.0f, -146.0f });
+	createRamp({ 120, 0.0f, -126.66f }, {105, 6.0f, -136.66f });
+	createLinearSegmentCircuit({ 120, 0.0f, -126.66f }, { 150, 0, -106.6f }, 8);
+
 	
+	/*createCircularSegmentCircuit({ -20, 0, 10 }, { 20, 0,20  }, -0.80f, 20);
+	createRamp({ 10, 0, 4}, { -30, 20 , 20 });
+	*/
 	return ret;
 }
 
@@ -41,24 +49,6 @@ void angleAndAxisFromEuler(float psi, float theta, float phi, float &angle, vec3
 {
 
 	// https://www.udacity.com/course/viewer#!/c-cs291/l-91073092/m-123949249
-
-	/*psi = psi * M_PI / 180.0f;
-	theta = theta * M_PI / 180.0f;
-	phi = phi * M_PI / 180.0f;*/
-
-	/*float c1 = cos(psi / 2.0f);
-	float c2 = cos(theta / 2.0f);
-	float c3 = cos(phi / 2.0f);
-	float s1 = sin(psi / 2.0f);
-	float s2 = sin(theta / 2.0f);
-	float s3 = sin(phi / 2.0f);
-
-	angle = 2.0f * acos(c1*c2*c3 - s1*s2*s3);
-	axis.x = s1*s2*c3 + c1*c2*s3;
-	axis.y = s1*c2*c3 + c1*s2*s3;
-	axis.z = c1*s2*c3 - s1*c2*s3;
-
-	axis = normalize(axis);*/
 
 	float m[3][3];
 	
@@ -81,9 +71,8 @@ void angleAndAxisFromEuler(float psi, float theta, float phi, float &angle, vec3
 	axis = normalize(axis);
 }
 
-void angleAndAxisRotMat(mat4x4 m, float &angle, vec3 &axis)
+void angleAndAxisFromRotMat(mat4x4 m, float &angle, vec3 &axis)
 {
-
 	angle = acos((m[0] + m[5] + m[10] - 1) / 2.0f);
 
 	axis.x = (m[9] - m[6]) / (2 * sin(angle));
@@ -130,77 +119,51 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	}
 }
 
-void ModuleSceneIntro::createRamp(const vec3 i, const vec3 f)
+void ModuleSceneIntro::createRamp(const vec3 i_pos, const vec3 f_pos)
 {
-	float height = 10.0f;
-	vec3 f2 = { f.x, height, f.z };
-	vec3 dir1 = normalize(f - i);
-	vec3 dir = normalize(f2 - i);
-
-	vec3 perp_v = { -dir1.z, 0, dir1.x };
-	perp_v = normalize(perp_v);
+	vec3 final_projection = { f_pos.x, 0, f_pos.z };
+	vec3 direction = normalize(f_pos - i_pos);						
+	vec3 planar_direction = normalize(final_projection - i_pos);
+	float distance = length(f_pos - i_pos);
+	float planar_distance = length(final_projection - i_pos);
 
 	float heading = 0.0f;
-	if (f.z >= i.z && f.x < i.x)
-		heading = acos(dot(dir1, { 1, 0, 0 }));
-	else if (f.z >= i.z && f.x >= i.x)
-		heading = acos(dot(dir1, { 1, 0, 0 }));
-	else if (f.z < i.z && f.x >= i.x)
-		heading = 2 * M_PI - acos(dot(dir1, { 1, 0, 0 }));
-	else if (f.z < i.z && f.x < i.x)
-		heading = 2 * M_PI - acos(dot(dir1, { 1, 0, 0 }));
+	if (f_pos.z >= i_pos.z && f_pos.x < i_pos.x)
+		heading = acos(dot(planar_direction, { 1, 0, 0 }));
+	else if (f_pos.z >= i_pos.z && f_pos.x >= i_pos.x)
+		heading = acos(dot(planar_direction, { 1, 0, 0 }));
+	else if (f_pos.z < i_pos.z && f_pos.x >= i_pos.x)
+		heading = 2 * M_PI - acos(dot(planar_direction, { 1, 0, 0 }));
+	else if (f_pos.z < i_pos.z && f_pos.x < i_pos.x)
+		heading = 2 * M_PI - acos(dot(planar_direction, { 1, 0, 0 }));
 
-	float slope = asin(height / length(f2 -i));
-
-	LOG("Heading = %f", heading * 180.0f / M_PI);
-	LOG("Height = %f", height );
-	LOG("Length = %f", length(f2));
-	LOG("Slope = %f", slope * 180.0f / M_PI);
-
-	float matrix[16];
-	memset(matrix, 0.0f, sizeof(matrix));
-
-	// Keep position
-	matrix[12] = i.x;
-	matrix[13] = i.y;
-	matrix[14] = i.z;
-	matrix[15] = 1;
-
-	// Rotate the body by heading.
-	matrix[0] = cos(heading);
-	matrix[2] = -sin(heading);
-	matrix[5] = 1;
-	matrix[8] = sin(heading);
-	matrix[10] = cos(heading);
+	float slope = asin(f_pos.y / distance);
 
 	Cube c;
-	vec3 pos;
+	/*vec3 pos;
 	c.color = Blue;
 	c.size = { 1, 2, 1 };
 
-	/*pos = i;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));*/
-
-	pos = f2;
+	pos = i_pos;
 	c.SetPos(pos.x, pos.y + 1, pos.z);
 	cube_circuit_pieces.prim_bodies.PushBack(c);
 	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
-	c.size = { 10.0f, 0.25f, 5.0f };
-	c.color = Green;
-	pos = i;
-	c.SetPos(pos.x, pos.y, pos.z);
-	/*for (uint i = 0; i < 16; i++)
-		c.transform.M[i] = matrix[i];	*/
-	//heading = 2 * M_PI - heading;
+	pos = f_pos;
+	c.SetPos(pos.x, pos.y + 1, pos.z);
+	cube_circuit_pieces.prim_bodies.PushBack(c);
+	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
+*/
+	c.size = { distance, 0.25f, TRACK_WIDTH - 2 };
+	c.color = White;
+
+	c.SetPos(i_pos.x + (direction.x * distance / 2.0f), i_pos.y + (sin(slope)* (c.size.x / 2.0f)), i_pos.z + (direction.z * distance / 2.0f));
 	
-	c.SetRotation(slope * 180.0f / M_PI, { 0, 0,1 });
+	c.SetRotation(slope * 180.0f / M_PI, { 0, 0, 1 });
 	mat4x4 R1;
 	for(uint i = 0; i < 16; i++)
 		R1[i] = c.transform.M[i];
-	c.SetRotation(-heading * 180.0f / M_PI, { 0,1,0});
+	c.SetRotation(-heading * 180.0f / M_PI, { 0, 1, 0});
 	mat4x4 R2;
 	for (uint i = 0; i < 16; i++)
 		R2[i] = c.transform.M[i];
@@ -208,12 +171,11 @@ void ModuleSceneIntro::createRamp(const vec3 i, const vec3 f)
 
 	float angle;
 	vec3 axis;
-	angleAndAxisRotMat(R3, angle, axis);
+	angleAndAxisFromRotMat(R3, angle, axis);
 	c.SetRotation(-angle * 180.0f / M_PI, { axis.x, axis.y, axis.z });
 
 	cube_circuit_pieces.prim_bodies.PushBack(c);
 	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
 }
 
 void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, uint intervals)
