@@ -242,7 +242,9 @@ PhysBody3D* ModulePhysics3D::AddBody(const Cube& cube, Module* listener, float m
 
 	pbody->is_sensor = sensor;
 	if (pbody->is_sensor == true)
-		App->scene_intro->sensors.PushBack(pbody);
+		body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+	else
+		body->setCollisionFlags(body->getCollisionFlags() &~btCollisionObject::CF_NO_CONTACT_RESPONSE);
 	pbody->collision_listeners.add(listener);
 	body->setUserPointer(pbody);
 	world->addRigidBody(body);

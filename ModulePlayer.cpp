@@ -199,7 +199,7 @@ update_status ModulePlayer::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		respawn(App->scene_intro->checkpoints[App->scene_intro->current_checkpoint]);
+		respawn(App->scene_intro->check_points[App->scene_intro->current_checkpoint]);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
@@ -238,11 +238,12 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModulePlayer::respawn(const vec3& respawn_point)
+void ModulePlayer::respawn(const PhysBody3D* respawn_point)
 {
-	vehicle->SetPos(respawn_point.x, respawn_point.y, respawn_point.z);
+	vec3 pos = respawn_point->GetPos();
+	vehicle->SetPos(pos.x, pos.y, pos.z);
+	vehicle->orient(respawn_point->rotation + M_PI/2);
 	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
-	vehicle->orient(M_PI / 2);
 }
 
 void ModulePlayer::showCrono()

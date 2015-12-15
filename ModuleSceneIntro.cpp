@@ -20,26 +20,21 @@ bool ModuleSceneIntro::Start()
 
 	App->camera->Move(vec3(0.0f, 400.0f, 0.0f));
 	App->camera->LookAt(vec3(-130.0f, 0, 55.0f));
-	vec3 cp0(-19.0f, 1, -175.0f);
-	vec3 cp1(171.0, 0, -104.0f);
 	vec3 cp2(58.0, 0, -71.0f);
 	vec3 cp3(85.0, 0, 86.0f);
 
 	current_checkpoint = 0;
-	checkpoints.PushBack(cp0);
-	checkpoints.PushBack(cp1);
-	checkpoints.PushBack(cp2);
-	checkpoints.PushBack(cp3);
 
 	// Circuit creation
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
-	createSensor({-19.0f, 0.0f, -175.0f});
+	createCheckPoint({-19.0f, 0.0f, -175.0f}, 0.0f);
 	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
 	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
 	createRamp({ 75, 0, -156.6f }, { 90, 4.0f, -146.0f });
 	createRamp({ 120, 0.0f, -126.66f }, {105, 4.0f, -136.66f });
 	createLinearSegmentCircuit({ 120, 0.0f, -126.66f }, { 150, 0, -106.6f }, 8);
 	createCircularSegmentCircuit({ 150, 0, -106.6f }, { 185.0f, 0, -130.0f }, 0.6f, 12);
+	createCheckPoint({ 171.0f, 0.0f, -107.0f }, 30.0f);
 	createLinearSegmentCircuit({ 185.0f, 0, -130.0f }, { 186.0f, 0.0f, -163.0f }, 8);
 	createCircularSegmentCircuit({ 185.0f, 0, -160.0f }, { 145.0f, 0, -175.0f }, 0.80f, 14);
 	createLinearSegmentCircuit({ 145.0f, 0, -175.0f }, { 70.0f, 0.0f, -110.0f }, 16);
@@ -151,7 +146,10 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.Render();
 
 	for (int i = 0; i < cube_circuit_pieces.prim_bodies.Count(); i++)
-		cube_circuit_pieces.prim_bodies[i].Render();		
+		cube_circuit_pieces.prim_bodies[i].Render();
+
+	for (int i = 0; i < prim_check_points.Count(); i++)
+		prim_check_points[i].Render();
 
 	return UPDATE_CONTINUE;
 }
@@ -160,11 +158,13 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->is_sensor == true)
 	{
-		for (uint i = 0; i < sensors.Count(); i++)
+		uint limit = check_points.Count();
+		for (uint i = 0; i < limit; i++)
 		{
-			if (body1 == sensors[i])
+			if (body1 == check_points[i])
 			{
 				current_checkpoint = i;
+				prim_check_points[i].color = Green;
 				body1->is_sensor = false;
 				break;
 			}
@@ -335,14 +335,17 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 
 }
 
-void ModuleSceneIntro::createSensor(const vec3 pos)
+void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 {
 	Cube sensor;
 	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
 	sensor.size = { dim.x, dim.y, dim.z };
-	sensor.SetPos(pos.x, pos.y - 1, pos.z);
+	sensor.SetPos(pos.x, pos.y + 1, pos.z);
+	sensor.SetRotation(direction, { 0, 1, 0 });
 	sensor.color = White;
-	sensors.PushBack(App->physics->AddBody(sensor, this, 0.0f, true));
-	prim_sensors.PushBack(sensor);
+	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
+	pb_sensor->rotation = direction * M_PI / 180;
+	check_points.PushBack(pb_sensor);
+	prim_check_points.PushBack(sensor);
 }
 

@@ -29,7 +29,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void respawn(const vec3& respawn_point);
+	void respawn(const PhysBody3D* respawn_point);
 	void showCrono();
 
 public:

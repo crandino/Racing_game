@@ -26,16 +26,15 @@ public:
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
-	p2DynArray<vec3> checkpoints;
-	p2DynArray<PhysBody3D*> sensors;
-	p2DynArray<Cube> prim_sensors;
+	p2DynArray<PhysBody3D*> check_points;
+	p2DynArray<Cube> prim_check_points;
 	int current_checkpoint;
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
 	void createRamp(const vec3 i, const vec3 f);
-	void createSensor(const vec3 pos);
+	void createCheckPoint(const vec3 pos, float direction);
 
 public:
 	/*
