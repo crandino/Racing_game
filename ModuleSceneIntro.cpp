@@ -31,8 +31,8 @@ bool ModuleSceneIntro::Start()
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
 	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
 	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
-	createRamp({ 75, 0, -156.6f }, { 90, 8.0f, -146.0f });
-	createRamp({ 120, 0.0f, -126.66f }, {105, 8.0f, -136.66f });
+	createRamp({ 75, 0, -156.6f }, { 90, 4.0f, -146.0f });
+	createRamp({ 120, 0.0f, -126.66f }, {105, 4.0f, -136.66f });
 	createLinearSegmentCircuit({ 120, 0.0f, -126.66f }, { 150, 0, -106.6f }, 8);
 	createCircularSegmentCircuit({ 150, 0, -106.6f }, { 185.0f, 0, -130.0f }, 0.6f, 12);
 	createLinearSegmentCircuit({ 185.0f, 0, -130.0f }, { 186.0f, 0.0f, -163.0f }, 8);
@@ -67,16 +67,28 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ 175.0f, 0, 120.0f }, { 175.0f, 0, 100.0f }, -0.1f, 6);
 	createLinearSegmentCircuit({ 175.0f, 0, 100.0f }, { 185.0f, 0, 80.0f }, 6);
 	createCircularSegmentCircuit({ 185.0f, 0, 80.0f }, { 150.0f, 0, 70.0f }, 0.99f, 12);
-	createCircularSegmentCircuit({ 150.0f, 0, 70.0f }, { 30.0f, 0, 140.0f }, -0.35f, 16);
-	createLinearSegmentCircuit({ 30.0f, 0, 140.0f }, { -40.0f, 0, 140.0f }, 8);
+	createCircularSegmentCircuit({ 150.0f, 0, 70.0f }, { 25.0f, 0, 140.0f }, -0.35f, 16);
+	createLinearSegmentCircuit({ 25.0f, 0, 140.0f }, { -35.0f, 0, 140.0f }, 8);
+	createCircularSegmentCircuit({ -35.0f, 0, 140.0f }, { -60.0f, 0, 120.0f }, -0.45f, 12);
+	createCircularSegmentCircuit({ -60.0f, 0, 120.0f }, { -30.0f, 0, 75.0f }, -0.3f, 12);
+	createCircularSegmentCircuit({ -30.0f, 0, 75.0f }, { 10.0f, 0, 75.0f }, -0.2f, 12);
+	createCircularSegmentCircuit({ 10.0f, 0, 75.0f }, { 15.0f, 0, 45.0f }, 0.99f, 12);
+	createLinearSegmentCircuit({ 15.0f, 0, 45.0f }, { 5.0f, 0, 45.0f }, 2);
+	createCircularSegmentCircuit({ 5.0f, 0, 45.0f }, { -10.0f, 0, 25.0f }, -0.40f, 10);
+	createCircularSegmentCircuit({ -10.0f, 0, 25.0f }, { -20.0f, 0, 10.0f }, 0.2f, 10);
+	createLinearSegmentCircuit({ -20.0f, 0, 10.0f }, { -60.0f, 0, -10.0f }, 10);
+	createCircularSegmentCircuit({ -60.0f, 0, -10.0f }, { -75.0f, 0, -40.0f }, -0.51f, 10);
+	createCircularSegmentCircuit({ -75.0f, 0, -40.0f }, { -80.0f, 0, -70.0f }, 0.25f, 10); 
+	createLinearSegmentCircuit({ -80.0f, 0, -70.0f }, { -100.0f, 0, -90.0f }, 8);
 	
+	createCircularSegmentCircuit({ -100.0f, 0, -90.0f }, { -135, 0.0f, -90.0f }, 0.49f, 10);
+	createLinearSegmentCircuit({ -135, 0.0f, -90.0f }, { -150, 0, -75.0f }, 8);
 	createCircularSegmentCircuit({ -150, 0, -75.0f }, { -184, 0.0f, -101.0f }, -0.68f, 12);
 	createLinearSegmentCircuit({ -185, 0.0f, -100.0f }, { -185, 0, -155.0f }, 12);
 	createCircularSegmentCircuit({ -185, 0, -155.0f }, { -145, 0, -155.0f }, -0.99f, 12);
 	createCircularSegmentCircuit({ -145, 0, -155.0f }, { -120, 0, -155.0f }, 0.99f, 12);
 	createCircularSegmentCircuit({ -120, 0, -155.0f }, { -100, 0, -175.0f }, -0.42f, 12);
 
-	LOG("%d", cube_circuit_pieces.prim_bodies.Count());
 	return ret;
 
 }
