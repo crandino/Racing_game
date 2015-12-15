@@ -21,7 +21,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec3(0.0f, 400.0f, 0.0f));
 	App->camera->LookAt(vec3(-130.0f, 0, 55.0f));
 	vec3 cp0(175, 1, 0);
-	vec3 cp1(25, 0, 0);
+	vec3 cp1(-145.0, 0, -75.0f);
 
 	current_checkpoint = 1;
 	checkpoints.PushBack(cp0);
