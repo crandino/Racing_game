@@ -19,7 +19,7 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	App->camera->Move(vec3(0.0f, 400.0f, 0.0f));
-	App->camera->LookAt(vec3(0.0f, 0.0f, -175.0f));
+	App->camera->LookAt(vec3(-130.0f, 0, 55.0f));
 	vec3 cp0(175, 1, 0);
 	vec3 cp1(25, 0, 0);
 
@@ -45,22 +45,35 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ 120.0f, 0, -20.0f }, { 10.0f, 0, 110.0f }, -0.45f, 24);
 	createLinearSegmentCircuit({ 10.0f, 0, 110.0f }, { -10.0f, 0, 110.0f }, 4);
 	createRamp({ -10.0f, 0, 110.0f }, { -40.0f, 8.0f, 110.0f });
-	createRamp({ -120.0f, 0, 110.0f }, { -90.0f, 8.0f, 110.0f });
-	createLinearSegmentCircuit({ -120.0f, 0, 110.0f }, { -160.0f, 0, 110.0f }, 12);
-	createCircularSegmentCircuit({ -160.0f, 0, 110.0f }, { -160.0f, 0, 80.0f }, -0.95f, 20);
-	createCircularSegmentCircuit({ -160.0f, 0, 80.0f }, { -140.0f, 0, 85.0f }, -0.15f, 6);
-	createCircularSegmentCircuit({ -140.0f, 0, 85.0f }, { -140.0f, 0, 85.0f }, 0.15f, 6);
-	
+	createRamp({ -105.0f, 0, 110.0f }, { -75.0f, 8.0f, 110.0f });
+	createLinearSegmentCircuit({ -105.0f, 0, 110.0f }, { -145.0f, 0, 110.0f }, 12);
+	createCircularSegmentCircuit({ -145.0f, 0, 110.0f }, { -145.0f, 0, 80.0f }, -0.95f, 20);
+	createCircularSegmentCircuit({ -145.0f, 0, 80.0f }, { -125.0f, 0, 85.0f }, -0.15f, 6);
+	createCircularSegmentCircuit({ -125.0f, 0, 85.0f }, { -105.0f, 0, 85.0f }, 0.20f, 12);
+	createCircularSegmentCircuit({ -105.0f, 0, 85.0f }, { -40.0f, 0, 30.0f }, 0.20f, 24);
+	createRamp({ -42.0f, 0, 35.0f }, { -32.0f, 4.0f, 15.0f });
+	createRamp({ -15.0f, 0, -19.0f }, { -25.0f, 4.0f, -1.0f });
+	createLinearSegmentCircuit({ -15.0f, 0, -19.0f }, { 0.0f, 0, -49.0f }, 8);
+	createCircularSegmentCircuit({ 0.0f, 0, -49.0f }, { 20.0f, 0, -60.0f }, -0.4f, 12);
+	createCircularSegmentCircuit({ 20.0f, 0, -60.0f }, { 20.0f, 0, -90.0f }, 0.95f, 12);
+	createCircularSegmentCircuit({ 20.0f, 0, -90.0f }, { -60.0f, 0, -75.0f }, 0.15f, 12);
+	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 4.0f, -70.0f });
+	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 4.0f, -62.5f });
+	createCircularSegmentCircuit({ -95.0f, 0, -57.5f }, { -185.0f, 0, 110.0f }, 0.25f, 24);
+	createCircularSegmentCircuit({ -185.0f, 0, 110.0f }, { -80.0f, 0, 185.0f }, 0.40f, 24);
+	createLinearSegmentCircuit({ -80.0f, 0, 185.0f }, { 160.0f, 0, 185.0f }, 24);
+	createCircularSegmentCircuit({ 160.0f, 0, 185.0f }, { 185.0f, 0, 160.0f}, 0.45f, 12);
+	createLinearSegmentCircuit({ 185.0f, 0, 160.0f }, { 175.0f, 0, 120.0f }, 8);
+	createCircularSegmentCircuit({ 175.0f, 0, 120.0f }, { 175.0f, 0, 100.0f }, -0.1f, 6);
+	createLinearSegmentCircuit({ 175.0f, 0, 100.0f }, { 185.0f, 0, 80.0f }, 6);
+	createCircularSegmentCircuit({ 185.0f, 0, 80.0f }, { 150.0f, 0, 70.0f }, 0.99f, 12);
+	createCircularSegmentCircuit({ 150.0f, 0, 70.0f }, { 30.0f, 0, 140.0f }, -0.35f, 16);
 	
 	createCircularSegmentCircuit({ -150, 0, -75.0f }, { -184, 0.0f, -101.0f }, -0.68f, 12);
 	createLinearSegmentCircuit({ -185, 0.0f, -100.0f }, { -185, 0, -155.0f }, 12);
 	createCircularSegmentCircuit({ -185, 0, -155.0f }, { -145, 0, -155.0f }, -0.99f, 12);
 	createCircularSegmentCircuit({ -145, 0, -155.0f }, { -120, 0, -155.0f }, 0.99f, 12);
-	createCircularSegmentCircuit({ -120, 0, -155.0f }, { -100, 0, -175.0f }, -0.42f, 12);
-
-
-
-
+	createCircularSegmentCircuit({ -120, 0, -155.0f }, { -100, 0, -175.0f }, -0.42f, 12);	
 	return ret;
 }
 
