@@ -99,9 +99,11 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(-145.0, 0, -75.0f);
-	vehicle->orient(-M_PI/2);
+	vehicle->SetPos(-19.0f, 0, -175.0f);
+	vehicle->orient(M_PI/2);
+
 	state = GO;
+	crono.Start();
 	
 	return true;
 }
@@ -228,8 +230,10 @@ update_status ModulePlayer::Update(float dt)
 
 	char title[80];
 	vec3 v = vehicle->GetPos();
-	sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), v.x, v.y, v.z );
-	App->window->SetTitle(title);
+	//sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), v.x, v.y, v.z );
+	//App->window->SetTitle(title);
+
+	showCrono();
 
 	return UPDATE_CONTINUE;
 }
@@ -239,5 +243,17 @@ void ModulePlayer::respawn(const vec3& respawn_point)
 	vehicle->SetPos(respawn_point.x, respawn_point.y, respawn_point.z);
 	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
 	vehicle->orient(M_PI / 2);
+}
+
+void ModulePlayer::showCrono()
+{
+	uint miliseconds = crono.Read() % 1000;
+	uint seconds = (crono.Read() / 1000) % 60;
+	uint minutes = (crono.Read() / 1000) / 60;
+
+	char title[80];
+	sprintf_s(title, "Total time --  %02d:%d:%03d  --", minutes, seconds, miliseconds);
+	App->window->SetTitle(title);
+
 }
 

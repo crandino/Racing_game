@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Timer.h"
 #include "p2Point.h"
 
 struct PhysVehicle3D;
@@ -29,6 +30,7 @@ public:
 	bool CleanUp();
 
 	void respawn(const vec3& respawn_point);
+	void showCrono();
 
 public:
 
@@ -38,4 +40,6 @@ public:
 	float brake;
 	bool  following_camera;
 	PLAYER_STATE state;
+
+	Timer crono;
 };
