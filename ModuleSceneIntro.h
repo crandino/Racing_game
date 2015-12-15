@@ -15,7 +15,7 @@ struct cubePieces
 	p2DynArray<Cube>			prim_bodies;
 };	
 
-#define TRACK_WIDTH 15.0f
+#define TRACK_WIDTH 20.0f
 
 class ModuleSceneIntro : public Module
 {

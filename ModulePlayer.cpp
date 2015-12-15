@@ -35,13 +35,13 @@ bool ModulePlayer::Start()
 
 	// Wheel properties ---------------------------------------
 	float connection_height = 1.2f;
-	float wheel_radius = 0.6f;
-	float wheel_width = 0.5f;
+	float wheel_radius = 0.6f;					// 0.6f
+	float wheel_width = 0.5f;					// 0.5f
 	float suspensionRestLength = 1.2f;
 
 	// Don't change anything below this line ------------------
 
-	float half_width = car.chassis_size.x * 0.5f;
+	float half_width = car.chassis_size.x * 0.5f;  // 0.5f
 	float half_length = car.chassis_size.z * 0.5f;
 	
 	vec3 direction(0,-1,0);
@@ -99,8 +99,8 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(-50, 0, -175.0f);
-	vehicle->orient(M_PI/2);
+	vehicle->SetPos(-120.0f, 0, 110.0f);
+	vehicle->orient(-M_PI/2);
 	state = GO;
 	
 	return true;
