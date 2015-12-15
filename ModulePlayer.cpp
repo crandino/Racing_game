@@ -238,6 +238,6 @@ void ModulePlayer::respawn(const vec3& respawn_point)
 {
 	vehicle->SetPos(respawn_point.x, respawn_point.y, respawn_point.z);
 	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
-	vehicle->orient(0);
+	vehicle->orient(M_PI / 2);
 }
 

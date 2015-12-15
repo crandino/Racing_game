@@ -20,19 +20,24 @@ bool ModuleSceneIntro::Start()
 
 	App->camera->Move(vec3(0.0f, 400.0f, 0.0f));
 	App->camera->LookAt(vec3(-130.0f, 0, 55.0f));
-	vec3 cp0(175, 1, 0);
-	vec3 cp1(-145.0, 0, -75.0f);
+	vec3 cp0(-19.0f, 1, -175.0f);
+	vec3 cp1(171.0, 0, -104.0f);
+	vec3 cp2(58.0, 0, -71.0f);
+	vec3 cp3(85.0, 0, 86.0f);
 
-	current_checkpoint = 1;
+	current_checkpoint = 0;
 	checkpoints.PushBack(cp0);
 	checkpoints.PushBack(cp1);
+	checkpoints.PushBack(cp2);
+	checkpoints.PushBack(cp3);
 
 	// Circuit creation
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
+	createSensor({-19.0f, 0.0f, -175.0f});
 	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
 	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
-	createRamp({ 75, 0, -156.6f }, { 90, 8.0f, -146.0f });
-	createRamp({ 120, 0.0f, -126.66f }, {105, 8.0f, -136.66f });
+	createRamp({ 75, 0, -156.6f }, { 90, 4.0f, -146.0f });
+	createRamp({ 120, 0.0f, -126.66f }, {105, 4.0f, -136.66f });
 	createLinearSegmentCircuit({ 120, 0.0f, -126.66f }, { 150, 0, -106.6f }, 8);
 	createCircularSegmentCircuit({ 150, 0, -106.6f }, { 185.0f, 0, -130.0f }, 0.6f, 12);
 	createLinearSegmentCircuit({ 185.0f, 0, -130.0f }, { 186.0f, 0.0f, -163.0f }, 8);
@@ -44,8 +49,8 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ 90.0f, 0, -20.0f }, { 120.0f, 0, -20.0f }, -0.99f, 16);
 	createCircularSegmentCircuit({ 120.0f, 0, -20.0f }, { 10.0f, 0, 110.0f }, -0.45f, 24);
 	createLinearSegmentCircuit({ 10.0f, 0, 110.0f }, { -10.0f, 0, 110.0f }, 4);
-	createRamp({ -10.0f, 0, 110.0f }, { -40.0f, 8.0f, 110.0f });
-	createRamp({ -105.0f, 0, 110.0f }, { -75.0f, 8.0f, 110.0f });
+	createRamp({ -10.0f, 0, 110.0f }, { -40.0f, 4.0f, 110.0f });
+	createRamp({ -105.0f, 0, 110.0f }, { -75.0f, 4.0f, 110.0f });
 	createLinearSegmentCircuit({ -105.0f, 0, 110.0f }, { -145.0f, 0, 110.0f }, 12);
 	createCircularSegmentCircuit({ -145.0f, 0, 110.0f }, { -145.0f, 0, 80.0f }, -0.95f, 20);
 	createCircularSegmentCircuit({ -145.0f, 0, 80.0f }, { -125.0f, 0, 85.0f }, -0.15f, 6);
@@ -57,8 +62,8 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ 0.0f, 0, -49.0f }, { 20.0f, 0, -60.0f }, -0.4f, 12);
 	createCircularSegmentCircuit({ 20.0f, 0, -60.0f }, { 20.0f, 0, -90.0f }, 0.95f, 12);
 	createCircularSegmentCircuit({ 20.0f, 0, -90.0f }, { -60.0f, 0, -75.0f }, 0.15f, 12);
-	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 4.0f, -70.0f });
-	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 4.0f, -62.5f });
+	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 2.0f, -70.0f });
+	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 2.0f, -62.5f });
 	createCircularSegmentCircuit({ -95.0f, 0, -57.5f }, { -185.0f, 0, 110.0f }, 0.25f, 24);
 	createCircularSegmentCircuit({ -185.0f, 0, 110.0f }, { -80.0f, 0, 185.0f }, 0.40f, 24);
 	createLinearSegmentCircuit({ -80.0f, 0, 185.0f }, { 160.0f, 0, 185.0f }, 24);
@@ -318,4 +323,14 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 
 }
 
+void ModuleSceneIntro::createSensor(const vec3 pos)
+{
+	Cube sensor;
+	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
+	sensor.size = { dim.x, dim.y, dim.z };
+	sensor.SetPos(pos.x, pos.y - 1, pos.z);
+	sensor.color = White;
+	sensors.PushBack(App->physics->AddBody(sensor, this, 0.0f, true));
+	prim_sensors.PushBack(sensor);
+}
 
