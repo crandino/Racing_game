@@ -34,6 +34,7 @@ public:
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
 	void createRamp(const vec3 i, const vec3 f);
+	
 
 public:
 	/*
