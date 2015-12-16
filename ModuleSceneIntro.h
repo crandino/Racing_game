@@ -35,6 +35,7 @@ public:
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
 	void createRamp(const vec3 i, const vec3 f);
 	void createCheckPoint(const vec3 pos, float direction);
+	void changeAllCheckpoints();
 
 public:
 	/*
