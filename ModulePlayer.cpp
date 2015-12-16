@@ -228,11 +228,12 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();
 
+
 	checkDrift();
 
-	char title[80];
-	vec3 v = vehicle->GetPos();
-	//sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), v.x, v.y, v.z );
+	//char title[80];
+	//vec3 pos = vehicle->GetPos();
+	//sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), pos.x, pos.y, pos.z);
 	//App->window->SetTitle(title);
 
 	showCrono();
@@ -256,7 +257,9 @@ void ModulePlayer::showCrono()
 	uint minutes = (crono.Read() / 1000) / 60;
 
 	char title[80];
-	sprintf_s(title, "Total time --  %02d:%02d:%03d  -- | -> %.1f km/h <- ", minutes, seconds, miliseconds, vehicle->GetKmh());
+
+	vec3 pos = vehicle->GetPos();
+	sprintf_s(title, "Total time --  %02d:%d:%03d  -- X:%.2f Y:%.2f Z:%.2f --", minutes, seconds, miliseconds, pos.x, pos.y, pos.z);
 	App->window->SetTitle(title);
 
 }

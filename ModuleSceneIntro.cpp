@@ -44,14 +44,17 @@ bool ModuleSceneIntro::Start()
 	createLinearSegmentCircuit({ 145.0f, 0, -175.0f }, { 70.0f, 0.0f, -110.0f }, 16);
 	createCircularSegmentCircuit({ 70.0f, 0.0f, -110.0f }, { 60.0f, 0, -80.0f }, 0.2f, 10);
 	createLinearSegmentCircuit({ 60.0f, 0, -80.0f }, { 60.0f, 0, -20.0f }, 18);
+	createCheckPoint({ 60.0f, 0, -80.0f }, -90.0f);
 	createCircularSegmentCircuit({ 60.0f, 0, -20.0f }, { 90.0f, 0, -20.0f }, 0.99f, 16);
 	createCircularSegmentCircuit({ 90.0f, 0, -20.0f }, { 120.0f, 0, -20.0f }, -0.99f, 16);
 	createCircularSegmentCircuit({ 120.0f, 0, -20.0f }, { 10.0f, 0, 110.0f }, -0.45f, 24);
+	createCheckPoint({ 108.0f, 0, 49.0f }, 230.0f);
 	createLinearSegmentCircuit({ 10.0f, 0, 110.0f }, { -10.0f, 0, 110.0f }, 4);
 	createRamp({ -10.0f, 0, 110.0f }, { -40.0f, 4.0f, 110.0f });
 	createRamp({ -105.0f, 0, 110.0f }, { -75.0f, 4.0f, 110.0f });
 	createLinearSegmentCircuit({ -105.0f, 0, 110.0f }, { -145.0f, 0, 110.0f }, 12);
 	createCircularSegmentCircuit({ -145.0f, 0, 110.0f }, { -145.0f, 0, 80.0f }, -0.95f, 20);
+	createCheckPoint({ -159.0f, 0, 96.0f }, 90.0f);
 	createCircularSegmentCircuit({ -145.0f, 0, 80.0f }, { -125.0f, 0, 85.0f }, -0.15f, 6);
 	createCircularSegmentCircuit({ -125.0f, 0, 85.0f }, { -105.0f, 0, 85.0f }, 0.20f, 12);
 	createCircularSegmentCircuit({ -105.0f, 0, 85.0f }, { -40.0f, 0, 30.0f }, 0.20f, 24);
@@ -59,6 +62,7 @@ bool ModuleSceneIntro::Start()
 	createRamp({ -15.0f, 0, -19.0f }, { -25.0f, 4.0f, -1.0f });
 	createLinearSegmentCircuit({ -15.0f, 0, -19.0f }, { 0.0f, 0, -49.0f }, 8);
 	createCircularSegmentCircuit({ 0.0f, 0, -49.0f }, { 20.0f, 0, -60.0f }, -0.4f, 12);
+	createCheckPoint({ 33.0f, 0, -74.0f }, 90.0f);
 	createCircularSegmentCircuit({ 20.0f, 0, -60.0f }, { 20.0f, 0, -90.0f }, 0.95f, 12);
 	createCircularSegmentCircuit({ 20.0f, 0, -90.0f }, { -60.0f, 0, -75.0f }, 0.15f, 12);
 	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
@@ -66,6 +70,7 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ -95.0f, 0, -57.5f }, { -185.0f, 0, 110.0f }, 0.25f, 24);
 	createCircularSegmentCircuit({ -185.0f, 0, 110.0f }, { -80.0f, 0, 185.0f }, 0.40f, 24);
 	createLinearSegmentCircuit({ -80.0f, 0, 185.0f }, { 160.0f, 0, 185.0f }, 24);
+	createCheckPoint({ -80.0f, 0, 185.0f }, 0.0f);
 	createCircularSegmentCircuit({ 160.0f, 0, 185.0f }, { 185.0f, 0, 160.0f}, 0.45f, 12);
 	createLinearSegmentCircuit({ 185.0f, 0, 160.0f }, { 175.0f, 0, 120.0f }, 8);
 	createCircularSegmentCircuit({ 175.0f, 0, 120.0f }, { 175.0f, 0, 100.0f }, -0.1f, 6);
@@ -77,14 +82,16 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ -60.0f, 0, 120.0f }, { -30.0f, 0, 75.0f }, -0.3f, 12);
 	createCircularSegmentCircuit({ -30.0f, 0, 75.0f }, { 10.0f, 0, 75.0f }, -0.2f, 12);
 	createCircularSegmentCircuit({ 10.0f, 0, 75.0f }, { 15.0f, 0, 45.0f }, 0.99f, 12);
+	createCheckPoint({ 25.0f, 0, 69.0f }, 50.0f);
 	createLinearSegmentCircuit({ 15.0f, 0, 45.0f }, { 5.0f, 0, 45.0f }, 2);
 	createCircularSegmentCircuit({ 5.0f, 0, 45.0f }, { -10.0f, 0, 25.0f }, -0.40f, 10);
 	createCircularSegmentCircuit({ -10.0f, 0, 25.0f }, { -20.0f, 0, 10.0f }, 0.2f, 10);
 	createLinearSegmentCircuit({ -20.0f, 0, 10.0f }, { -60.0f, 0, -10.0f }, 10);
 	createCircularSegmentCircuit({ -60.0f, 0, -10.0f }, { -75.0f, 0, -40.0f }, -0.51f, 10);
-	createCircularSegmentCircuit({ -75.0f, 0, -40.0f }, { -80.0f, 0, -70.0f }, 0.25f, 10); 
-	createLinearSegmentCircuit({ -80.0f, 0, -70.0f }, { -100.0f, 0, -90.0f }, 8);	
+	createCircularSegmentCircuit({ -75.0f, 0, -40.0f }, { -80.0f, 0, -70.0f }, 0.25f, 10); 	
+	createLinearSegmentCircuit({ -80.0f, 0, -70.0f }, { -100.0f, 0, -90.0f }, 8);
 	createCircularSegmentCircuit({ -100.0f, 0, -90.0f }, { -135, 0.0f, -90.0f }, 0.49f, 10);
+	createCheckPoint({ -118.0f, 0, -97.0f }, 180.0f);
 	createLinearSegmentCircuit({ -135, 0.0f, -90.0f }, { -150, 0, -75.0f }, 8);
 	createCircularSegmentCircuit({ -150, 0, -75.0f }, { -184, 0.0f, -101.0f }, -0.68f, 12);
 	createLinearSegmentCircuit({ -185, 0.0f, -100.0f }, { -185, 0, -155.0f }, 12);
@@ -164,15 +171,24 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->is_sensor == true)
 	{
-		uint limit = check_points.Count();
-		for (uint i = 0; i < limit; i++)
+		for (uint i = 0; i < check_points.Count(); i++)
 		{
 			if (body1 == check_points[i])
 			{
-				current_checkpoint = i;
-				prim_check_points[i].color = Green;
-				body1->is_sensor = false;
-				break;
+				if (i > current_checkpoint + 1)
+				{
+					App->player->respawn(check_points[current_checkpoint]);
+					break;
+				}
+				else
+				{
+					current_checkpoint = i;
+					prim_check_points[i].color = Green;
+					body1->is_sensor = false;
+					if (body1 == check_points[check_points.Count() - 1])
+						changeAllCheckpoints();
+					break;
+				}
 			}
 		}
 	}
@@ -355,6 +371,7 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	prim_check_points.PushBack(sensor);
 }
 
+
 void ModuleSceneIntro::createStart(const vec3 pos)
 {
 	Cube cube;
@@ -368,7 +385,7 @@ void ModuleSceneIntro::createStart(const vec3 pos)
 		cube.SetPos(pos.x, height + 1.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f));
 		cube_circuit_pieces.prim_bodies.PushBack(cube);
 
-		cube.SetPos(pos.x, height + 1.0f, pos.z - ((TRACK_WIDTH + 1.0f)/ 2.0f));
+		cube.SetPos(pos.x, height + 1.0f, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f));
 		cube_circuit_pieces.prim_bodies.PushBack(cube);
 	}
 
@@ -386,5 +403,24 @@ void ModuleSceneIntro::createStart(const vec3 pos)
 	// Traffic light	
 	traffic_light1.SetPos(pos.x - 0.4f, 6.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f) - 10);
 	traffic_light2.SetPos(pos.x - 0.4f, 6.0f, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f) + 10);
+}
+
+void ModuleSceneIntro::changeAllCheckpoints()
+{
+	uint count = 0;
+	for (uint i = 0; i < check_points.Count() - 1; i++)
+	{
+		if (check_points[i]->is_sensor == false)
+			count++;
+	}
+
+	if (count == check_points.Count() - 1)
+	{
+		for (uint i = 0; i < check_points.Count() - 1; i++)
+		{
+				check_points[i]->is_sensor = true;
+				prim_check_points[i].color = White;
+		}
+	}
 }
 
