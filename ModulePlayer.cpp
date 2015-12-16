@@ -253,7 +253,7 @@ void ModulePlayer::showCrono()
 	uint minutes = (crono.Read() / 1000) / 60;
 
 	char title[80];
-	sprintf_s(title, "Total time --  %02d:%d:%03d  --", minutes, seconds, miliseconds);
+	sprintf_s(title, "Total time --  %02d:%02d:%03d  --", minutes, seconds, miliseconds);
 	App->window->SetTitle(title);
 
 }
