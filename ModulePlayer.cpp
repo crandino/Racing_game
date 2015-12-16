@@ -99,7 +99,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vehicle->SetPos(-19.0f, 0, -175.0f);
+	vehicle->SetPos(-23.0f, 0, -175.0f);
 	vehicle->orient(M_PI/2);
 
 	state = GO;
@@ -258,9 +258,16 @@ void ModulePlayer::showCrono()
 
 	char title[80];
 
-	vec3 pos = vehicle->GetPos();
-	sprintf_s(title, "Total time --  %02d:%d:%03d  -- X:%.2f Y:%.2f Z:%.2f --", minutes, seconds, miliseconds, pos.x, pos.y, pos.z);
-	App->window->SetTitle(title);
+	if (state != FINISH)
+	{
+		sprintf_s(title, "Total time --  %02d:%02d:%03d  -- %.1f Km/h -- LAP:%d", minutes, seconds, miliseconds, vehicle->GetKmh(), App->scene_intro->lap);
+		App->window->SetTitle(title);
+	}
+	else
+	{
+		sprintf_s(title, "Total time --  %02d:%02d:%03d  -- FINISH", minutes, seconds, miliseconds);
+		App->window->SetTitle(title);
+	}
 
 }
 

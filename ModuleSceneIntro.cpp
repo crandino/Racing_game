@@ -18,15 +18,13 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(0.0f, 400.0f, 0.0f));
-	App->camera->LookAt(vec3(-130.0f, 0, 55.0f));
-	vec3 cp2(58.0, 0, -71.0f);
-	vec3 cp3(85.0, 0, 86.0f);
+	App->camera->Move(vec3(0.0f, 350.0f, 0.0f));
+	App->camera->LookAt(vec3(0.0f, 0.0f, 0.0f));
 
 	traffic_light1.radius = traffic_light2.radius = 0.4f;
 	traffic_light1.color = traffic_light2.color = Red;
 
-	current_checkpoint = 0;
+	current_checkpoint = lap = 0;
 
 	// Circuit creation
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
@@ -171,6 +169,18 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1->is_sensor == true)
 	{
+		if (body1 == check_points[0])
+		{
+			check_points[check_points.Count() - 1]->is_sensor = true;
+			prim_check_points[check_points.Count() - 1].color = White;
+			lap++;
+			if (lap > 2)
+			{
+				App->player->state = FINISH;
+				App->player->crono.Stop();
+			}
+		}
+
 		for (uint i = 0; i < check_points.Count(); i++)
 		{
 			if (body1 == check_points[i])
