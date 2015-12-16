@@ -35,6 +35,7 @@ public:
 	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
 	void createRamp(const vec3 i, const vec3 f);
 	void createCheckPoint(const vec3 pos, float direction);
+	void createStart(const vec3 pos);
 
 public:
 	/*
@@ -58,4 +59,7 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	Sphere traffic_light1;
+	Sphere traffic_light2;
 };

@@ -23,11 +23,15 @@ bool ModuleSceneIntro::Start()
 	vec3 cp2(58.0, 0, -71.0f);
 	vec3 cp3(85.0, 0, 86.0f);
 
+	traffic_light1.radius = traffic_light2.radius = 0.4f;
+	traffic_light1.color = traffic_light2.color = Red;
+
 	current_checkpoint = 0;
 
 	// Circuit creation
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
 	createCheckPoint({-19.0f, 0.0f, -175.0f}, 0.0f);
+	createStart({ -19.0f, 0.0f, -175.0f });
 	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
 	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
 	createRamp({ 75, 0, -156.6f }, { 90, 4.0f, -146.0f });
@@ -57,8 +61,8 @@ bool ModuleSceneIntro::Start()
 	createCircularSegmentCircuit({ 0.0f, 0, -49.0f }, { 20.0f, 0, -60.0f }, -0.4f, 12);
 	createCircularSegmentCircuit({ 20.0f, 0, -60.0f }, { 20.0f, 0, -90.0f }, 0.95f, 12);
 	createCircularSegmentCircuit({ 20.0f, 0, -90.0f }, { -60.0f, 0, -75.0f }, 0.15f, 12);
-	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 2.0f, -70.0f });
-	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 2.0f, -62.5f });
+	createRamp({ -60.0f, 0, -75.0f }, { -70.0f, 3.0f, -70.0f });
+	createRamp({ -95.0f, 0, -57.5f }, { -85.0f, 3.0f, -62.5f });
 	createCircularSegmentCircuit({ -95.0f, 0, -57.5f }, { -185.0f, 0, 110.0f }, 0.25f, 24);
 	createCircularSegmentCircuit({ -185.0f, 0, 110.0f }, { -80.0f, 0, 185.0f }, 0.40f, 24);
 	createLinearSegmentCircuit({ -80.0f, 0, 185.0f }, { 160.0f, 0, 185.0f }, 24);
@@ -79,8 +83,7 @@ bool ModuleSceneIntro::Start()
 	createLinearSegmentCircuit({ -20.0f, 0, 10.0f }, { -60.0f, 0, -10.0f }, 10);
 	createCircularSegmentCircuit({ -60.0f, 0, -10.0f }, { -75.0f, 0, -40.0f }, -0.51f, 10);
 	createCircularSegmentCircuit({ -75.0f, 0, -40.0f }, { -80.0f, 0, -70.0f }, 0.25f, 10); 
-	createLinearSegmentCircuit({ -80.0f, 0, -70.0f }, { -100.0f, 0, -90.0f }, 8);
-	
+	createLinearSegmentCircuit({ -80.0f, 0, -70.0f }, { -100.0f, 0, -90.0f }, 8);	
 	createCircularSegmentCircuit({ -100.0f, 0, -90.0f }, { -135, 0.0f, -90.0f }, 0.49f, 10);
 	createLinearSegmentCircuit({ -135, 0.0f, -90.0f }, { -150, 0, -75.0f }, 8);
 	createCircularSegmentCircuit({ -150, 0, -75.0f }, { -184, 0.0f, -101.0f }, -0.68f, 12);
@@ -150,6 +153,9 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	for (int i = 0; i < prim_check_points.Count(); i++)
 		prim_check_points[i].Render();
+
+	traffic_light1.Render();
+	traffic_light2.Render();
 
 	return UPDATE_CONTINUE;
 }
@@ -347,5 +353,38 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	pb_sensor->rotation = direction * M_PI / 180;
 	check_points.PushBack(pb_sensor);
 	prim_check_points.PushBack(sensor);
+}
+
+void ModuleSceneIntro::createStart(const vec3 pos)
+{
+	Cube cube;
+	cube.color = Blue;
+	cube.size = { 1.0f, 1.0f, 1.0f };
+
+	// Columns
+	for (uint height = 0; height < 6; height++)
+	{
+		cube.color = (height % 2 == 0) ? Black : White;
+		cube.SetPos(pos.x, height + 1.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f));
+		cube_circuit_pieces.prim_bodies.PushBack(cube);
+
+		cube.SetPos(pos.x, height + 1.0f, pos.z - ((TRACK_WIDTH + 1.0f)/ 2.0f));
+		cube_circuit_pieces.prim_bodies.PushBack(cube);
+	}
+
+	// Up bar
+	for (uint disp = 0; disp < 11; disp++)
+	{
+		cube.color = (disp % 2 == 0) ? White : Black;
+		cube.SetPos(pos.x, 6.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f) - disp);
+		cube_circuit_pieces.prim_bodies.PushBack(cube);
+
+		cube.SetPos(pos.x, 6.0f, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f) + disp);
+		cube_circuit_pieces.prim_bodies.PushBack(cube);
+	}
+
+	// Traffic light	
+	traffic_light1.SetPos(pos.x - 0.4f, 6.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f) - 10);
+	traffic_light2.SetPos(pos.x - 0.4f, 6.0f, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f) + 10);
 }
 

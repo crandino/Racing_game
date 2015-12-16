@@ -228,6 +228,8 @@ update_status ModulePlayer::Update(float dt)
 
 	vehicle->Render();
 
+	checkDrift();
+
 	char title[80];
 	vec3 v = vehicle->GetPos();
 	//sprintf_s(title, "%.1f Km/h   X:%.2f Y:%.2f Z:%.2f", vehicle->GetKmh(), v.x, v.y, v.z );
@@ -243,7 +245,8 @@ void ModulePlayer::respawn(const PhysBody3D* respawn_point)
 	vec3 pos = respawn_point->GetPos();
 	vehicle->SetPos(pos.x, pos.y, pos.z);
 	vehicle->orient(respawn_point->rotation + M_PI/2);
-	vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
+	//vehicle->vehicle->getRigidBody()->setLinearVelocity({ 0, 0, 0 });
+	vehicle->SetLinearVelocity(0, 0, 0);
 }
 
 void ModulePlayer::showCrono()
@@ -253,8 +256,25 @@ void ModulePlayer::showCrono()
 	uint minutes = (crono.Read() / 1000) / 60;
 
 	char title[80];
-	sprintf_s(title, "Total time --  %02d:%02d:%03d  --", minutes, seconds, miliseconds);
+	sprintf_s(title, "Total time --  %02d:%02d:%03d  -- | -> %.1f km/h <- ", minutes, seconds, miliseconds, vehicle->GetKmh());
 	App->window->SetTitle(title);
 
+}
+
+bool ModulePlayer::checkDrift()
+{
+	vec3 for_dir = vehicle->GetForwardVector();
+	vec3 vel_dir = vehicle->GetLinearVelocity();
+	
+	//LOG("%f %f", vel_dir.x, vel_dir.z);
+	
+	vec2 for_dir2(for_dir.x, for_dir.z);
+	for_dir2 = normalize(for_dir2);
+	vec2 vel_dir2(vel_dir.x, vel_dir.z);
+	vel_dir2 = normalize(vel_dir2);
+	float angle = acos(dot(for_dir2, vel_dir2));
+	//LOG("Angle %f", angle);
+
+	return true;
 }
 

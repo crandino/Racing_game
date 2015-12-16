@@ -55,3 +55,16 @@ void PhysBody3D::SetPos(float x, float y, float z)
 	t.setOrigin(btVector3(x, y, z));
 	body->setWorldTransform(t);
 }
+
+void PhysBody3D::SetLinearVelocity(float x, float y, float z)
+{
+	btVector3 v(x, y, z);
+	body->setLinearVelocity(v);
+}
+
+vec3 PhysBody3D::GetLinearVelocity() const
+{
+	const btVector3 v = body->getLinearVelocity();
+	vec3 ret = (v.getX(), v.getY(), v.getZ());
+	return ret;
+}

@@ -31,6 +31,7 @@ public:
 
 	void respawn(const PhysBody3D* respawn_point);
 	void showCrono();
+	bool checkDrift();
 
 public:
 
