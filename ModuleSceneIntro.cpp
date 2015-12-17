@@ -193,7 +193,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 				else
 				{
 					current_checkpoint = i;
-					prim_check_points[i].color = Green;
+					prim_check_points[i].color = prim_check_points[i + 1].color = Green;
 					body1->is_sensor = false;
 					if (body1 == check_points[check_points.Count() - 1])
 						changeAllCheckpoints();
@@ -373,12 +373,25 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
 	sensor.size = { dim.x, dim.y, dim.z };
 	sensor.SetPos(pos.x, pos.y + 1, pos.z);
+	Cube check_point;
+	check_point.size = { 2.0f, 2.0f, 2.0f };
+	check_point.SetPos(pos.x, pos.y + 2, pos.z + TRACK_WIDTH / 2);
+	check_point.SetRotation(direction, { 0, 1, 0 });
+	check_point.color = White;
+	Cube check_point2;
+	check_point2.size = { 2.0f, 2.0f, 2.0f };
+	check_point2.SetPos(pos.x, pos.y + 2, pos.z - TRACK_WIDTH/2);
+	check_point2.SetRotation(direction, { 0, 1, 0 });
+	check_point2.color = White;
 	sensor.SetRotation(direction, { 0, 1, 0 });
-	sensor.color = White;
+	check_point.SetRotation(direction, { 0, 1, 0 });
+	check_point2.SetRotation(direction, { 0, 1, 0 });
+
 	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
 	pb_sensor->rotation = direction * M_PI / 180;
 	check_points.PushBack(pb_sensor);
-	prim_check_points.PushBack(sensor);
+	prim_check_points.PushBack(check_point);
+	prim_check_points.PushBack(check_point2);
 }
 
 
