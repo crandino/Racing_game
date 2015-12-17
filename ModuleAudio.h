@@ -25,6 +25,9 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	// Stop the music
+	bool stopMusic(float fade_time = 0.0f);
+
 private:
 
 	Mix_Music*			music;

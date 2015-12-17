@@ -154,3 +154,16 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+bool ModuleAudio::stopMusic(float fade_time)
+{
+	if (fade_time > 0.0f)
+	{
+		Mix_FadeOutMusic((int)(fade_time * 1000.0f));
+	}
+	else
+	{
+		Mix_HaltMusic();
+	}
+	return true;
+}

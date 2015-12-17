@@ -13,6 +13,7 @@ class vec3;
 
 enum PLAYER_STATE
 {
+	PREPARATION,
 	READY,
 	STEADY,
 	GO,
@@ -30,8 +31,9 @@ public:
 	bool CleanUp();
 
 	void respawn(const PhysBody3D* respawn_point);
-	void showCrono();
+	void showInfo();
 	bool checkDrift();
+	void showVeredict();
 
 public:
 
@@ -42,5 +44,16 @@ public:
 	bool  following_camera;
 	PLAYER_STATE state;
 
+	uint lap;
+
 	Timer crono;
+	uint countdown_fx;
+	uint go_fx;
+	uint applause_fx;
+	uint oh_no_fx;
+	uint great_race_fx;
+	uint jeering_fx;
+
+	uint best_time;
+	bool countdown_played;
 };

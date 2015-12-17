@@ -29,7 +29,6 @@ public:
 	p2DynArray<PhysBody3D*> check_points;
 	p2DynArray<Cube> prim_check_points;
 	uint current_checkpoint;
-	uint lap;
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);

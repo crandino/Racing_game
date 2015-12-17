@@ -18,13 +18,13 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(0.0f, 350.0f, 0.0f));
-	App->camera->LookAt(vec3(0.0f, 0.0f, 0.0f));
+	//App->camera->Move(vec3(-30.0f, 50.0f, -175.0f));
+	//App->camera->LookAt(vec3(-30.0f, 0, -175.0f));
 
 	traffic_light1.radius = traffic_light2.radius = 0.4f;
-	traffic_light1.color = traffic_light2.color = Red;
+	//traffic_light1.color = traffic_light2.color = Red;
 
-	current_checkpoint = lap = 0;
+	current_checkpoint = 0;
 
 	// Circuit creation
 	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
@@ -173,12 +173,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		{
 			check_points[check_points.Count() - 1]->is_sensor = true;
 			prim_check_points[check_points.Count() - 1].color = White;
-			lap++;
-			if (lap > 2)
-			{
-				App->player->state = FINISH;
-				App->player->crono.Stop();
-			}
+			App->player->lap++;
 		}
 
 		for (uint i = 0; i < check_points.Count(); i++)
@@ -402,13 +397,13 @@ void ModuleSceneIntro::createStart(const vec3 pos)
 	cube.size = { 1.0f, 1.0f, 1.0f };
 
 	// Columns
-	for (uint height = 0; height < 6; height++)
+	for (uint height = 0; height < 7; height++)
 	{
 		cube.color = (height % 2 == 0) ? Black : White;
-		cube.SetPos(pos.x, height + 1.0f, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f));
+		cube.SetPos(pos.x, height, pos.z + ((TRACK_WIDTH + 1.0f) / 2.0f));
 		cube_circuit_pieces.prim_bodies.PushBack(cube);
 
-		cube.SetPos(pos.x, height + 1.0f, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f));
+		cube.SetPos(pos.x, height, pos.z - ((TRACK_WIDTH + 1.0f) / 2.0f));
 		cube_circuit_pieces.prim_bodies.PushBack(cube);
 	}
 
@@ -437,13 +432,10 @@ void ModuleSceneIntro::changeAllCheckpoints()
 			count++;
 	}
 
-	if (count == check_points.Count() - 1)
+	for (uint i = 0; i < count; i++)
 	{
-		for (uint i = 0; i < check_points.Count() - 1; i++)
-		{
-				check_points[i]->is_sensor = true;
-				prim_check_points[i].color = White;
-		}
+			check_points[i]->is_sensor = true;
+			prim_check_points[i].color = White;
 	}
 }
 
