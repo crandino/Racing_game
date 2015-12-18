@@ -172,7 +172,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		if (body1 == check_points[0])
 		{
 			check_points[check_points.Count() - 1]->is_sensor = true;
-			prim_check_points[check_points.Count() - 1].color = White;
+			prim_check_points[prim_check_points.Count() - 1].color = White;
+			prim_check_points[prim_check_points.Count() - 2].color = White;
 			App->player->lap++;
 		}
 
@@ -193,6 +194,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 					if (body1 == check_points[check_points.Count() - 1])
 						changeAllCheckpoints();
 					break;
+
 				}
 			}
 		}
@@ -365,8 +367,8 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 {	
 	float radius = TRACK_WIDTH / 2;
-	vec3 pos1(0, pos.y + 2, radius);
-	vec3 pos2(0, pos.y + 2, -radius);
+	vec3 pos1(0, pos.y + 2.9, radius);
+	vec3 pos2(0, pos.y + 2.9, -radius);
 	float theta = direction * M_PI / 180;
 	pos1.x += radius * sin(theta); pos1.z = pos1.z * cos(theta);
 	pos2.x -= radius * sin(theta); pos2.z = pos2.z * cos(theta);
@@ -375,6 +377,7 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
 	sensor.size = { dim.x, dim.y, dim.z };
 	sensor.SetPos(pos.x, pos.y + 1, pos.z);
+	sensor.SetRotation(direction, { 0, 1, 0 });
 	
 	Cube check_point;
 	check_point.size = { 2.0f, 2.0f, 2.0f };
@@ -384,7 +387,6 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	check_point2.size = { 2.0f, 2.0f, 2.0f };
 	check_point2.SetPos(pos2.x + pos.x, pos2.y, pos2.z + pos.z);
 	check_point2.color = White;
-	sensor.SetRotation(direction, { 0, 1, 0 });
 
 	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
 	pb_sensor->rotation = theta;
@@ -429,17 +431,10 @@ void ModuleSceneIntro::createStart(const vec3 pos)
 
 void ModuleSceneIntro::changeAllCheckpoints()
 {
-	uint count = 0;
 	for (uint i = 0; i < check_points.Count() - 1; i++)
 	{
-		if (check_points[i]->is_sensor == false)
-			count++;
-	}
-
-	for (uint i = 0; i < count; i++)
-	{
-			check_points[i]->is_sensor = true;
-			prim_check_points[i].color = White;
+		check_points[i]->is_sensor =  true;
+		prim_check_points[2 * i].color = prim_check_points[2 * i + 1].color = White;
 	}
 }
 
