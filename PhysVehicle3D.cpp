@@ -40,6 +40,8 @@ void PhysVehicle3D::Render()
 
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 
+	// F1 designed by Jordi Nunes
+
 	Cube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(&chassis.transform);
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);

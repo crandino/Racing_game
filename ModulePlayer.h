@@ -7,9 +7,9 @@
 struct PhysVehicle3D;
 class vec3;
 
-#define MAX_ACCELERATION 5000.0f	   // 1000.0f
-#define TURN_DEGREES 20.0f * DEGTORAD  // 15.0f
-#define BRAKE_POWER 250.0f			   // 1000.0f
+#define MAX_ACCELERATION 8000.0f	   // Previous 6000.0f
+#define TURN_DEGREES 25.0f * DEGTORAD  // Previous 20.0.0f
+#define BRAKE_POWER 300.0f			   // Previous 250.0f
 
 enum PLAYER_STATE
 {

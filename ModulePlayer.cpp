@@ -34,6 +34,7 @@ bool ModulePlayer::Start()
 	VehicleInfo car;
 
 	// Car properties 
+	// F1 designed by Jordi Nunes
 	car.chassis_size.Set(2.0f, 0.75f, 3.0f);
 	car.chassis_offset.Set(0.0f, 0.5f, 0.0f);
 	car.bridge_size.Set(0.8f, 0.75f, 2.0f);

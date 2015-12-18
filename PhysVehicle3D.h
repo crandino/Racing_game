@@ -24,6 +24,7 @@ struct VehicleInfo
 {
 	~VehicleInfo();
 	
+	// F1 designed by Jordi Nunes
 	vec3 chassis_size;
 	vec3 chassis_offset;
 	vec3 bridge_size;
