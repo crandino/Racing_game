@@ -32,7 +32,7 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	void createLinearSegmentCircuit(const vec3 initial_pos, const vec3 final_pos, uint intervals);
-	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals);
+	void createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint left_intervals, uint right_intervals = 6);
 	void createRamp(const vec3 i, const vec3 f);
 	void createCheckPoint(const vec3 pos, float direction);
 	void createStart(const vec3 pos);

@@ -110,8 +110,11 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-
-	state = PREPARATION;
+	vec3 p = { 120.0f, 0, -20.0f };
+	vehicle->SetPos(p.x, p.y, p.z);
+	App->camera->Move({ p.x, 100.0f, p.z });
+	App->camera->LookAt(p);
+	state = GO;
 	
 	return true;
 }
@@ -120,6 +123,7 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");	
+	delete[] vehicle->info.wheels;
 	return true;
 }
 
@@ -187,7 +191,7 @@ update_status ModulePlayer::Update(float dt)
 			{
 				state = GO;
 				App->audio->PlayFx(go_fx);
-				App->audio->PlayMusic("Music/Nickelback-Animals.ogg");
+				//App->audio->PlayMusic("Music/Nickelback-Animals.ogg");
 				App->scene_intro->traffic_light1.color = App->scene_intro->traffic_light2.color = Green;
 				following_camera = true;
 				crono.Stop();

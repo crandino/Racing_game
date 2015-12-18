@@ -18,34 +18,30 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	//App->camera->Move(vec3(-30.0f, 50.0f, -175.0f));
-	//App->camera->LookAt(vec3(-30.0f, 0, -175.0f));
-
-	traffic_light1.radius = traffic_light2.radius = 0.4f;
-	//traffic_light1.color = traffic_light2.color = Red;
+	traffic_light1.radius = traffic_light2.radius = 0.4f;	
 
 	current_checkpoint = 0;
 
 	// Circuit creation
-	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 30);
+	createLinearSegmentCircuit({ -100, 0, -175.0f }, { 30, 0, -175.0f }, 44);
 	createCheckPoint({-19.0f, 0.0f, -175.0f}, 0.0f);
 	createStart({ -19.0f, 0.0f, -175.0f });
-	createCircularSegmentCircuit({ 30, 0, -175.0f }, { 70, 0, -160.0f }, -0.1, 16);
-	createLinearSegmentCircuit({ 70, 0, -160.0f }, { 75, 0, -156.6f }, 2);
-	createRamp({ 75, 0, -156.6f }, { 90, 4.0f, -146.0f });
-	createRamp({ 120, 0.0f, -126.66f }, {105, 4.0f, -136.66f });
-	createLinearSegmentCircuit({ 120, 0.0f, -126.66f }, { 150, 0, -106.6f }, 8);
-	createCircularSegmentCircuit({ 150, 0, -106.6f }, { 185.0f, 0, -130.0f }, 0.6f, 12);
+	createCircularSegmentCircuit({ 30.0f, 0, -175.0f }, { 70.0f, 0, -160.0f }, -0.15, 16, 12);
+	createLinearSegmentCircuit({ 70.0f, 0, -160.0f }, { 80.0f, 0, -153.2f }, 4);
+	createRamp({ 75.0f, 0, -156.6f }, { 90, 4.0f, -146.0f });
+	createRamp({ 120.0f, 0.0f, -126.66f }, {105, 4.0f, -136.66f });
+	createLinearSegmentCircuit({ 115, 0.0f, -130.0f }, { 150, 0, -106.6f }, 16); 
+	createCircularSegmentCircuit({ 150, 0, -106.6f }, { 185.0f, 0, -130.0f }, 0.6f, 22, 10);
 	createCheckPoint({ 171.0f, 0.0f, -107.0f }, 30.0f);
-	createLinearSegmentCircuit({ 185.0f, 0, -130.0f }, { 186.0f, 0.0f, -163.0f }, 8);
-	createCircularSegmentCircuit({ 185.0f, 0, -160.0f }, { 145.0f, 0, -175.0f }, 0.80f, 14);
-	createLinearSegmentCircuit({ 145.0f, 0, -175.0f }, { 70.0f, 0.0f, -110.0f }, 16);
-	createCircularSegmentCircuit({ 70.0f, 0.0f, -110.0f }, { 60.0f, 0, -80.0f }, 0.2f, 10);
-	createLinearSegmentCircuit({ 60.0f, 0, -80.0f }, { 60.0f, 0, -20.0f }, 18);
+	createLinearSegmentCircuit({ 185.0f, 0, -130.0f }, { 186.0f, 0.0f, -163.0f }, 12);
+	createCircularSegmentCircuit({ 186.0f, 0, -163.0f }, { 145.0f, 0, -175.0f }, 0.7f, 26, 14);
+	createLinearSegmentCircuit({ 145.0f, 0, -175.0f }, { 70.0f, 0.0f, -110.0f }, 30);
+	createCircularSegmentCircuit({ 70.0f, 0.0f, -110.0f }, { 60.0f, 0, -80.0f }, 0.2f, 14, 8);
+	createLinearSegmentCircuit({ 60.0f, 0, -80.0f }, { 60.0f, 0, -20.0f }, 20);
 	createCheckPoint({ 60.0f, 0, -80.0f }, -90.0f);
-	createCircularSegmentCircuit({ 60.0f, 0, -20.0f }, { 90.0f, 0, -20.0f }, 0.99f, 16);
-	createCircularSegmentCircuit({ 90.0f, 0, -20.0f }, { 120.0f, 0, -20.0f }, -0.99f, 16);
-	createCircularSegmentCircuit({ 120.0f, 0, -20.0f }, { 10.0f, 0, 110.0f }, -0.45f, 24);
+	createCircularSegmentCircuit({ 60.0f, 0, -20.0f }, { 90.0f, 0, -20.0f }, 0.99f, 24, 12);
+	createCircularSegmentCircuit({ 90.0f, 0, -20.0f }, { 120.0f, 0, -20.0f }, -0.99f, 24, 12);
+	createCircularSegmentCircuit({ 120.0f, 0, -20.0f }, { 10.0f, 0, 110.0f }, -0.45f, 70, 60);
 	createCheckPoint({ 108.0f, 0, 49.0f }, 230.0f);
 	createLinearSegmentCircuit({ 10.0f, 0, 110.0f }, { -10.0f, 0, 110.0f }, 4);
 	createRamp({ -10.0f, 0, 110.0f }, { -40.0f, 4.0f, 110.0f });
@@ -222,20 +218,6 @@ void ModuleSceneIntro::createRamp(const vec3 i_pos, const vec3 f_pos)
 	float slope = asin(f_pos.y / distance);
 
 	Cube c;
-	/*vec3 pos;
-	c.color = Blue;
-	c.size = { 1, 2, 1 };
-
-	pos = i_pos;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-
-	pos = f_pos;
-	c.SetPos(pos.x, pos.y + 1, pos.z);
-	cube_circuit_pieces.prim_bodies.PushBack(c);
-	cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
-*/
 	c.size = { distance, 0.25f, TRACK_WIDTH - 2 };
 	c.color = White;
 
@@ -296,7 +278,7 @@ void ModuleSceneIntro::createLinearSegmentCircuit(const vec3 i, const vec3 f, ui
 	}
 }
 
-void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint intervals)
+void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, float factor, uint exterior_intervals, uint interior_intervals)
 {
 	assert(factor < 1.0f && factor > -1.0f);
 	float distance = length(f - i);
@@ -341,10 +323,11 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 	c.color = Orange;
 
 	vec3 central_pos;
-	for (uint j = 0; j < intervals; j++)
+	// Left side of the curve - On the car direction
+	for (uint j = 0; j < exterior_intervals; j++)
 	{
 		c.color = (j % 2 == 0) ? White : Red;
-		float sub_angle = (factor > 0.0f) ? -(float)j / intervals * theta : (float)j / intervals * theta;
+		float sub_angle = (factor > 0.0f) ? -(float)j / exterior_intervals * theta : (float)j / exterior_intervals * theta;
 
 		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
 		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);	
@@ -354,11 +337,22 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
 		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c,this, 0.0f));
+	}
 
+	// Left side of the curve - On the car direction
+	for (uint j = 0; j < interior_intervals; j++)
+	{
+		c.color = (j % 2 == 0) ? White : Red;
+		float sub_angle = (factor > 0.0f) ? -(float)j / interior_intervals * theta : (float)j / interior_intervals * theta;
+
+		central_pos.x = center_circle.x + radius * cos(sub_angle + angle_ref);
+		central_pos.z = center_circle.z + radius * sin(sub_angle + angle_ref);
+
+		vec3 to_center = normalize(central_pos - center_circle);
 		pos = central_pos + ((TRACK_WIDTH / 2.0f) * -to_center);
 		c.SetPos(pos.x, pos.y + 1, pos.z);
 		cube_circuit_pieces.prim_bodies.PushBack(c);
-		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c,this, 0.0f));
+		cube_circuit_pieces.phys_bodies.PushBack(App->physics->AddBody(c, this, 0.0f));
 
 	}
 
