@@ -110,7 +110,7 @@ bool ModulePlayer::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
-	vec3 p = { 120.0f, 0, -20.0f };
+	vec3 p = { 160.0f, 0, 185.0f };
 	vehicle->SetPos(p.x, p.y, p.z);
 	App->camera->Move({ p.x, 100.0f, p.z });
 	App->camera->LookAt(p);
