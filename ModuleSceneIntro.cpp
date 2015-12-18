@@ -188,7 +188,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 				else
 				{
 					current_checkpoint = i;
-					prim_check_points[i].color = prim_check_points[i + 1].color = Green;
+					prim_check_points[2 * i].color = prim_check_points[2 * i + 1].color = Green;
 					body1->is_sensor = false;
 					if (body1 == check_points[check_points.Count() - 1])
 						changeAllCheckpoints();
@@ -366,21 +366,24 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 {
 	Cube sensor;
 	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
+	float radius = TRACK_WIDTH / 2;
+	vec3 original_pos = pos;
+	vec3 pos1(0, pos.y + 2, radius);
+	vec3 pos2(0, pos.y + 2, -radius);
 	sensor.size = { dim.x, dim.y, dim.z };
 	sensor.SetPos(pos.x, pos.y + 1, pos.z);
+	float theta = direction * M_PI / 180;
+	pos1.x += radius * sin(theta); pos1.z = pos1.z * cos(theta);
+	pos2.x -= radius * sin(theta); pos2.z = pos2.z * cos(theta);
 	Cube check_point;
 	check_point.size = { 2.0f, 2.0f, 2.0f };
-	check_point.SetPos(pos.x, pos.y + 2, pos.z + TRACK_WIDTH / 2);
-	check_point.SetRotation(direction, { 0, 1, 0 });
+	check_point.SetPos(pos1.x + pos.x, pos1.y, pos1.z + pos.z);
 	check_point.color = White;
 	Cube check_point2;
 	check_point2.size = { 2.0f, 2.0f, 2.0f };
-	check_point2.SetPos(pos.x, pos.y + 2, pos.z - TRACK_WIDTH/2);
-	check_point2.SetRotation(direction, { 0, 1, 0 });
+	check_point2.SetPos(pos2.x + pos.x, pos2.y, pos2.z + pos.z);
 	check_point2.color = White;
 	sensor.SetRotation(direction, { 0, 1, 0 });
-	check_point.SetRotation(direction, { 0, 1, 0 });
-	check_point2.SetRotation(direction, { 0, 1, 0 });
 
 	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
 	pb_sensor->rotation = direction * M_PI / 180;
