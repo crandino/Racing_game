@@ -52,7 +52,7 @@ bool ModulePlayer::Start()
 	car.suspensionCompression = 0.83f;
 	car.suspensionDamping = 0.88f;
 	car.maxSuspensionTravelCm = 1000.0f;
-	car.frictionSlip = 5.0f;
+	car.frictionSlip = 7.0f;
 	car.maxSuspensionForce = 6000.0f;
 
 	// Wheel properties ---------------------------------------
@@ -163,13 +163,13 @@ update_status ModulePlayer::Update(float dt)
 			turn = acceleration = brake = 0.0f;
 			
 			vec3 p = vehicle->GetPos();
-			App->camera->Look(vec3(-30.0f, 50.0f, -175.0f), p);
+			App->camera->Look(vec3(-30.0f, 700.0f, -175.0f), p);
 			
 			break;
 		}
 		case READY:
 		{
-			float speed_cam = 0.08f;
+			float speed_cam = 0.05f;
 
 			vec3 p = vehicle->GetPos();
 			vec3 f = vehicle->GetForwardVector();
@@ -184,7 +184,7 @@ update_status ModulePlayer::Update(float dt)
 				crono.Start();
 			}				
 			else
-				App->camera->Look(App->camera->Position + (speed_cam * camera_disp_vec), p);			
+				App->camera->Look(App->camera->Position + (speed_cam * camera_disp_vec), p);
 
 			break;
 		}
@@ -305,8 +305,11 @@ void ModulePlayer::respawn(const PhysBody3D* respawn_point)
 {
 	vec3 pos = respawn_point->GetPos();
 	vehicle->SetPos(pos.x, pos.y, pos.z);
-	vehicle->orient(respawn_point->rotation + M_PI/2);
-	vehicle->SetLinearVelocity(0, 0, 0);
+
+	vec3 zero = { 0.0f, 0.0f, 0.0f };
+	vehicle->SetAngularVelocity(zero.x, zero.y, zero.z);
+	vehicle->orient(respawn_point->rotation + M_PI/2);	
+	vehicle->SetLinearVelocity(zero.x, zero.y, zero.z);	
 }
 
 void ModulePlayer::showInfo()

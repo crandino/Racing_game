@@ -68,3 +68,9 @@ vec3 PhysBody3D::GetLinearVelocity() const
 	vec3 ret = (v.getX(), v.getY(), v.getZ());
 	return ret;
 }
+
+void PhysBody3D::SetAngularVelocity(float x, float y, float z)
+{
+	btVector3 v(x, y, z);
+	body->setAngularVelocity(v);
+}
