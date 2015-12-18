@@ -112,7 +112,6 @@ bool ModulePlayer::Start()
 	vehicle = App->physics->AddVehicle(car);
 
 	state = PREPARATION;
-	crono.Start();
 	
 	return true;
 }
@@ -133,6 +132,7 @@ update_status ModulePlayer::Update(float dt)
 		case PREPARATION:
 		{
 			state = READY;
+			vehicle->Brake(brake);
 			crono.Stop();
 			App->audio->stopMusic();
 			App->scene_intro->changeAllCheckpoints();
@@ -142,13 +142,14 @@ update_status ModulePlayer::Update(float dt)
 			App->scene_intro->traffic_light1.color = App->scene_intro->traffic_light2.color = Red;
 			lap = 0;
 			
-			vehicle->SetLinearVelocity(0, 0, 0);
-			vehicle->orient(M_PI / 2);
 			vehicle->SetPos(-30.0f, 0, -175.0f);
+			vehicle->orient(M_PI / 2);
+			vehicle->SetLinearVelocity(0.0f, 0.0f, 0.0f);
+			vehicle->ApplyEngineForce(0.0f);
+			vehicle->Turn(0.0f);			
 			
 			turn = acceleration = brake = 0.0f;
 			
-			//App->camera->Move(vec3(-30.0f, 50.0f, -175.0f));
 			vec3 p = vehicle->GetPos();
 			App->camera->Look(vec3(-30.0f, 50.0f, -175.0f), p);
 			
@@ -238,11 +239,6 @@ update_status ModulePlayer::Update(float dt)
 					acceleration = -(MAX_ACCELERATION / 2);
 			}
 
-			if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
-			{
-				state = PREPARATION;
-			}
-
 			vehicle->Turn(turn);
 			vehicle->Brake(brake);
 			vehicle->ApplyEngineForce(acceleration);
@@ -267,12 +263,20 @@ update_status ModulePlayer::Update(float dt)
 			break;
 		}
 	}
+
+	// New game
+	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+	{
+		state = PREPARATION;
+	}
 	
+	// Activate/deactivate camera on car.
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		following_camera = !following_camera;
 	}
 
+	// Reset position to previous active checkpoint
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		respawn(App->scene_intro->check_points[App->scene_intro->current_checkpoint]);
