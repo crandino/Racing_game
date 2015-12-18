@@ -363,18 +363,19 @@ void ModuleSceneIntro::createCircularSegmentCircuit(const vec3 i, const vec3 f, 
 }
 
 void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
-{
-	Cube sensor;
-	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
+{	
 	float radius = TRACK_WIDTH / 2;
-	vec3 original_pos = pos;
 	vec3 pos1(0, pos.y + 2, radius);
 	vec3 pos2(0, pos.y + 2, -radius);
-	sensor.size = { dim.x, dim.y, dim.z };
-	sensor.SetPos(pos.x, pos.y + 1, pos.z);
 	float theta = direction * M_PI / 180;
 	pos1.x += radius * sin(theta); pos1.z = pos1.z * cos(theta);
 	pos2.x -= radius * sin(theta); pos2.z = pos2.z * cos(theta);
+
+	Cube sensor;
+	vec3 dim(2.0f, 1.0f, TRACK_WIDTH);
+	sensor.size = { dim.x, dim.y, dim.z };
+	sensor.SetPos(pos.x, pos.y + 1, pos.z);
+	
 	Cube check_point;
 	check_point.size = { 2.0f, 2.0f, 2.0f };
 	check_point.SetPos(pos1.x + pos.x, pos1.y, pos1.z + pos.z);
@@ -386,7 +387,7 @@ void ModuleSceneIntro::createCheckPoint(const vec3 pos, float direction)
 	sensor.SetRotation(direction, { 0, 1, 0 });
 
 	PhysBody3D* pb_sensor = App->physics->AddBody(sensor, this, 0.0f, true);
-	pb_sensor->rotation = direction * M_PI / 180;
+	pb_sensor->rotation = theta;
 	check_points.PushBack(pb_sensor);
 	prim_check_points.PushBack(check_point);
 	prim_check_points.PushBack(check_point2);
