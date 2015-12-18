@@ -289,12 +289,52 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 
 	btCollisionShape* colShape = new btBoxShape(btVector3(info.chassis_size.x*0.5f, info.chassis_size.y*0.5f, info.chassis_size.z*0.5f));
 	shapes.add(colShape);
-
 	btTransform trans;
 	trans.setIdentity();
 	trans.setOrigin(btVector3(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z));
-
 	comShape->addChildShape(trans, colShape);
+
+	btCollisionShape* bridgeShape = new btBoxShape(btVector3(info.bridge_size.x*0.5f, info.bridge_size.y*0.5f, info.bridge_size.z*0.5f));
+	shapes.add(bridgeShape);
+	btTransform bridge_trans;
+	bridge_trans.setIdentity();
+	bridge_trans.setOrigin(btVector3(info.bridge_offset.x, info.bridge_offset.y, info.bridge_offset.z));
+	comShape->addChildShape(bridge_trans, bridgeShape);
+
+	btCollisionShape* frontWingShape = new btBoxShape(btVector3(info.front_wing_size.x*0.5f, info.front_wing_size.y*0.5f, info.front_wing_size.z*0.5f));
+	shapes.add(frontWingShape);
+	btTransform front_wing_trans;
+	front_wing_trans.setIdentity();
+	front_wing_trans.setOrigin(btVector3(info.front_wing_offset.x, info.front_wing_offset.y, info.front_wing_offset.z));
+	comShape->addChildShape(front_wing_trans, frontWingShape);
+
+	btCollisionShape* rearWingShape = new btBoxShape(btVector3(info.rear_wing_size.x*0.5f, info.rear_wing_size.y*0.5f, info.rear_wing_size.z*0.5f));
+	shapes.add(rearWingShape);
+	btTransform rear_wing_trans;
+	rear_wing_trans.setIdentity();
+	rear_wing_trans.setOrigin(btVector3(info.rear_wing_offset.x, info.rear_wing_offset.y, info.rear_wing_offset.z));
+	comShape->addChildShape(rear_wing_trans, rearWingShape);
+
+	btCollisionShape* leftWingShape = new btBoxShape(btVector3(info.vertical_wing_size.x*0.5f, info.vertical_wing_size.y*0.5f, info.vertical_wing_size.z*0.5f));
+	shapes.add(leftWingShape);
+	btTransform left_wing_trans;
+	left_wing_trans.setIdentity();
+	left_wing_trans.setOrigin(btVector3(info.vertical_wing_offset.x, info.vertical_wing_offset.y, info.vertical_wing_offset.z));
+	comShape->addChildShape(left_wing_trans, leftWingShape);
+
+	btCollisionShape* rightWingShape = new btBoxShape(btVector3(info.vertical_wing_size.x*0.5f, info.vertical_wing_size.y*0.5f, info.vertical_wing_size.z*0.5f));
+	shapes.add(rightWingShape);
+	btTransform right_wing_trans;
+	right_wing_trans.setIdentity();
+	right_wing_trans.setOrigin(btVector3(-info.vertical_wing_offset.x, info.vertical_wing_offset.y, info.vertical_wing_offset.z));
+	comShape->addChildShape(right_wing_trans, rightWingShape);
+
+	btCollisionShape* upperWingShape = new btBoxShape(btVector3(info.upper_size.x*0.5f, info.upper_size.y*0.5f, info.upper_size.z*0.5f));
+	shapes.add(upperWingShape);
+	btTransform upper_trans;
+	upper_trans.setIdentity();
+	upper_trans.setOrigin(btVector3(info.upper_offset.x, info.upper_offset.y, info.upper_offset.z));
+	comShape->addChildShape(upper_trans, upperWingShape);
 
 	btTransform startTransform;
 	startTransform.setIdentity();

@@ -31,3 +31,6 @@ extern Color Blue;
 extern Color Black;
 extern Color White;
 extern Color Orange;
+extern Color Grey;
+extern Color Yellow;
+extern Color Dark_Green;
