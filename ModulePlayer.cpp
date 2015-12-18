@@ -119,8 +119,7 @@ bool ModulePlayer::Start()
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
-	LOG("Unloading player");
-
+	LOG("Unloading player");	
 	return true;
 }
 
@@ -188,7 +187,7 @@ update_status ModulePlayer::Update(float dt)
 			{
 				state = GO;
 				App->audio->PlayFx(go_fx);
-				App->audio->PlayMusic("Music/Nickelback-Animals.wav");
+				App->audio->PlayMusic("Music/Nickelback-Animals.ogg");
 				App->scene_intro->traffic_light1.color = App->scene_intro->traffic_light2.color = Green;
 				following_camera = true;
 				crono.Stop();
