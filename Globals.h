@@ -12,8 +12,6 @@ void log(const char file[], int line, const char* format, ...);
 #define RADTODEG 57.295779513082320876f
 #define HAVE_M_PI
 
-
-
 typedef unsigned int uint;
 
 enum update_status
@@ -24,12 +22,12 @@ enum update_status
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 1600
-#define SCREEN_HEIGHT 900
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
 #define SCREEN_SIZE 1
-#define WIN_FULLSCREEN false
+#define WIN_FULLSCREEN true
 #define WIN_RESIZABLE true
 #define WIN_BORDERLESS false
-#define WIN_FULLSCREEN_DESKTOP false
+#define WIN_FULLSCREEN_DESKTOP true
 #define VSYNC true
-#define TITLE "3D Physics Playground"
+#define TITLE "Best Racing Game Ever"
